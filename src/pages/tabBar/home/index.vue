@@ -18,19 +18,39 @@
               <text>
                 {{ item.brand }}</text>
             </div>
-            <div style="margin: 10rpx 0px">
-              <label for="">当前使用人:</label>
-              <text>{{ item.presetTime }}</text>
+            <div style="margin: 10rpx 0px" @click.stop="show=true">
+              <label for="">当前占用人:</label>
+              <text>{{ item.name }}</text>
             </div>
             <div style="margin: 10rpx 0px">
               <label for="">预计下机时间:</label>
-              <text>{{ item.presetTime }}</text>
+              <text>{{ item.name }}</text>
             </div>
 
           </view>
         </view>
       </u-list-item>
     </u-list>
+    <u-modal :show="show" title="个人信息"  @confirm="show=false">
+      <div>
+        <div style="margin: 10rpx 0px">
+          <label for="" style="margin-right:10px;width: 110rpx;    display: inline-block;">姓名:</label>
+          <text>{{ presetTime }}李小凤</text>
+        </div>
+        <div style="margin: 10rpx 0px">
+          <label for="" style="margin-right:10px;width: 110rpx;    display: inline-block;">工号:</label>
+          <text>{{ presetTime }}000814</text>
+        </div>
+        <div style="margin: 10rpx 0px">
+          <label for="" style="margin-right:10px;width: 110rpx;    display: inline-block;">部门:</label>
+          <text>{{presetTime }}test</text>
+        </div>
+        <div style="margin: 10rpx 0px">
+          <label for="" style="margin-right:10px;width: 110rpx;    display: inline-block;">手机号:</label>
+          <text>{{ presetTime }}000</text>
+        </div>
+      </div>
+    </u-modal>
     <view class="button1">
       <u-button type="primary" text="终止使用" class="primarys" @click="ok"></u-button>
       <u-button text="取消"></u-button>
@@ -44,6 +64,8 @@ export default {
   components: {},
   data() {
     return {
+      show:false,
+      presetTime:'',
       list: [
         { name: "火花", brand: "中国造", type: "001", size: "80*90", img: hys, active: false },
         { name: "火花", brand: "中国造", type: "001", size: "80*90", img: hys, active: false }
@@ -75,7 +97,7 @@ export default {
             e.serviceCategoryName = '为外部提供支撑服务'
           }
         });
-        this.list = r
+        // this.list = r
       })
     },
     actives(index) {

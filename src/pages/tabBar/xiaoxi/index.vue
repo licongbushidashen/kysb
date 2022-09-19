@@ -34,7 +34,7 @@
               <text>{{ item.selfTotalMinutes }}</text>
             </div>
             <div>
-              <label for="">当前使用人:</label>
+              <label for="">当前占用人:</label>
               <text>{{ item.newUser }}</text>
             </div>
             <div>

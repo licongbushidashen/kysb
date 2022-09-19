@@ -8,7 +8,7 @@
       </u-form-item>
       <u-form-item label="实验/样品名称" labelWidth="auto" prop="userInfo.sampleName" borderBottom ref="item1"
         class="required" @click="showsample = true">
-        <u--input v-model="model1.userInfo.sampleName" disabled disabledColor="#ffffff" placeholder="请选择实验/样品名称"
+        <u--input class="yangshixiugai" v-model="model1.userInfo.sampleName" disabled disabledColor="#ffffff" placeholder="请选择实验/样品名称"
           border="none"></u--input>
         <u-icon slot="right" name="arrow-right"></u-icon>
       </u-form-item>
@@ -18,30 +18,30 @@
         <!-- <u-icon slot="right" name="arrow-right"></u-icon> -->
       </u-form-item>
       <u-form-item label="预估结束时间" labelWidth="auto" prop="userInfo.sex" borderBottom @click="opentime" ref="item1">
-        <u--input v-model="model1.userInfo.presetTime" disabled disabledColor="#ffffff" placeholder="请选择时间"
+        <u--input class="yangshixiugai" v-model="model1.userInfo.presetTime" disabled disabledColor="#ffffff" placeholder="请选择时间"
           border="none">
         </u--input>
         <u-icon slot="right" name="arrow-right"></u-icon>
       </u-form-item>
       <u-form-item label="支撑服务类型" labelWidth="auto" prop="userInfo.serviceCategory" borderBottom ref="item1"
         class="required" @click="showstype = true">
-        <u--input v-model="model1.userInfo.serviceCategory" disabled disabledColor="#ffffff" placeholder="请选择支撑服务类型"
+        <u--input class="yangshixiugai" v-model="model1.userInfo.serviceCategory" disabled disabledColor="#ffffff" placeholder="请选择支撑服务类型"
           border="none">
         </u--input>
         <u-icon slot="right" name="arrow-right"></u-icon>
       </u-form-item>
-      <u-form-item label="项目名称" labelWidth="auto" prop="userInfo.project" borderBottom ref="item1" class="required"
+      <u-form-item  label="项目名称" labelWidth="auto" prop="userInfo.project" borderBottom ref="item1" class="required"
         @click="project">
-        <u--input v-model="model1.userInfo.project.itemName" disabled disabledColor="#ffffff" placeholder="请选择支撑服务类型"
+        <u--input class="yangshixiugai" v-model="model1.userInfo.project.itemName" disabled disabledColor="#ffffff" placeholder="请选择支撑服务类型"
           border="none"></u--input>
         <u-icon slot="right" name="arrow-right"></u-icon>
       </u-form-item>
-      <u-form-item label="项目代码" labelWidth="auto" prop="userInfo.type" borderBottom ref="item1" class="required">
-        <u--input v-model="model1.userInfo.project.itemCode" disabled disabledColor="#ffffff" placeholder="请选择支撑服务类型"
+      <u-form-item  label="项目代码" labelWidth="auto" prop="userInfo.type" borderBottom ref="item1" class="required">
+        <u--input class="yangshixiugai" v-model="model1.userInfo.project.itemCode" disabled disabledColor="#ffffff" placeholder="请选择支撑服务类型"
           border="none"></u--input>
       </u-form-item>
       <u-form-item label="项目负责人" labelWidth="auto" prop="userInfo.type" borderBottom ref="item1" class="required">
-        <u--input v-model="model1.userInfo.project.dutyUser" disabled disabledColor="#ffffff" placeholder="请选择支撑服务类型"
+        <u--input class="yangshixiugai" v-model="model1.userInfo.project.dutyUser" disabled disabledColor="#ffffff" placeholder="请选择支撑服务类型"
           border="none"></u--input>
       </u-form-item>
     </u--form>
@@ -49,7 +49,7 @@
       <view v-for="(item, i) in clients" :key="i" class="wtr">
         <p class="addwt">
           委托人信息
-          <u-icon name="close-circle" color="#2979ff" size="28" @click="splies(i)"></u-icon>
+          <u-icon name="close-circle" color="#2979ff" size="28" @click="splies(i)"  style="    margin-top: 3px;    margin-left: 5px;"></u-icon>
         </p>
         <view @click="openurl(i)"><label for="">姓名</label>
           <u--input v-model="item.userName" :disabled="model1.userInfo.type != '为外部提供支撑服务'" disabledColor="#ffffff"
@@ -65,7 +65,7 @@
         </view>
       </view>
       <p class="addwt" @click="addpush">
-        <u-icon name="plus-circle" color="#2979ff" size="28"></u-icon><span>添加委托人</span>
+        <u-icon name="plus-circle" color="#2979ff" size="28" style="    margin-top: 3px;    margin-right: 5px;"></u-icon><span>添加委托人</span>
       </p>
     </view>
     <u-action-sheet :show="showsample" :actions="list" @close="showsample = false" @select="sample"> </u-action-sheet>
@@ -254,6 +254,9 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+.yangshixiugai{
+  padding-left: 16rpx !important;
+}
 ::v-deep .u-line {
   border: 0px !important;
   border-bottom: 0.1px solid #eaeaea !important;
