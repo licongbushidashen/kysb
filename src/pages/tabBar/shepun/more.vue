@@ -10,18 +10,18 @@
       <u-list-item v-for="(item, index) in list" :key="index">
         <view class="list" :class="item.active ? 'active' : '111'" @click="actives(index)">
           <view>
-            <image :src="item.img" mode="" style="width: 64px; height: 65px"></image>
+            <image :src="item.url" mode="" style="width: 64px; height: 65px"></image>
           </view>
           <view class="tips">
             <div>
-              <text>{{ item.name }}</text
+              <text>{{ item.registerName }}</text
               ><text>{{ item.brand }}</text>
             </div>
             <div style="margin: 10rpx 0px">
               <label for="">型号:</label>
-              <text>{{ item.type }}</text>
+              <text>{{ item.model }}</text>
             </div>
-            <div>
+            <div style="margin: 10rpx 0px">
               <label for="">规格:</label>
               <text>{{ item.size }}</text>
             </div>
@@ -30,12 +30,18 @@
       </u-list-item>
     </u-list>
     <view class="button1">
-      <u-button type="primary" text="确认" class="primarys" @click="ok"></u-button>
+      <u-button type="primary" text="确认" class="primarys" @click="ok" :disabled="flag"></u-button>
       <u-button text="取消"></u-button>
     </view>
   </view>
 </template>
 <script>
+        import i1 from "../../../static/icon/1.jpg"
+import i2 from "../../../static/icon/2.jpeg"
+import i3 from "../../../static/icon/3.jpeg"
+import i4 from "../../../static/icon/4.jpg"
+import i5 from "../../../static/icon/5.jpeg"
+import i6 from "../../../static/icon/6.jpeg"
 import hys from "../../../static/img/hys.png"
 document.getElementsByTagName("title")[0].innerText = ""
 export default {
@@ -43,27 +49,60 @@ export default {
   data() {
     return {
       list: [
-        { name: "火花", brand: "中国造", type: "001", size: "80*90", img: hys ,active:false},
-        { name: "火花", brand: "中国造", type: "001", size: "80*90", img: hys ,active:false}
-      ]
+        
+      ],
+      flag:false
     }
   },
   onLoad() {},
-  mounted() {},
+  mounted() {
+    this.dto()
+  },
   methods: {
+    dto() {
+      let arr = uni.getStorageSync('sb')
+      this.$res.post(this.https+'/api/Facility/Register/GetRegisterInfos', arr, { "content-type": "application/json" }).then(r => {
+        r.data.forEach(e => {
+          if(e.registerNo=='1001'){
+        e.url=i1
+      }else if(e.registerNo=='1002'){
+        e.url=i2
+      }else if(e.registerNo=='1003'){
+        e.url=i3
+      }else if(e.registerNo=='2001'){
+        e.url=i4
+      }else if(e.registerNo=='2002'){
+        e.url=i5
+      }else if(e.registerNo=='2003'){
+        e.url=i6
+      }
+          e.active=true
+        });
+        this.list = r.data
+      })
+    },
     actives(index) {
+      this.flag=true
       this.list[index].active = !this.list[index].active
-      console.log(this.list)
+      this.list.forEach(e=>{
+        
+        if(e.active){
+          this.flag=false
+        }
+      })
     },
     sexSelect(e) {},
     ok() {
-      this.$refs.form1
-        .validate()
-        .then(res => {
+      let list =[]
+      for(let i =0; i<this.list.length;i++){
+        if(this.list[i].active){
+          list.push(this.list[i])
+        }
+      }
+      uni.setStorageSync('list',list);
           uni.navigateTo({
-            url: `/pages/tabBar/xiaoxi/success`
+            url: `/pages/tabBar/shepun/register`
           })
-        })
         .catch(errors => {})
     }
   }
@@ -74,28 +113,28 @@ export default {
     border: 1px solid #3c9cff;
     position:relative;
   }
-  .list.active::before{
-    content: '';
-      width: 12px;
-      height: 12px;
-      position: absolute;
-      right: 0px;
-      bottom: 0px;
-      background: #3c9cff;
-      background: linear-gradient(135deg, transparent, transparent 50%, #3c9cff 50%, #3c9cff 100%)
-  }
-  .list.active::after{
+  .list.active::before {
+  content: "";
+  width: 22px;
+  height: 22px;
+  position: absolute;
+  right: 0px;
+  bottom: 0px;
+  background: #3c9cff;
+  background: linear-gradient(135deg, transparent, transparent 50%, #3c9cff 50%, #3c9cff 100%);
+}
 
-      content: '';
-      width: 12px;
-      height: 12px;
-      position: absolute;
-      right: -1px;
-    bottom: -2px;
-      background-image:url(../../../static/img/dui.png) ;
-      background-size:100% 100% ;
-    
-  }
+.list.active::after {
+  content: "";
+  width: 22px;
+  height: 20px;
+  position: absolute;
+  right: -3px;
+  bottom: -2px;
+  background-image: url(../../../static/img/dui.png);
+  background-size: 100% 100%;
+}
+
 .list {
   display: flex;
   border: 1px solid #d6d7d9;
@@ -104,7 +143,7 @@ export default {
   .tips {
     margin-left: 20rpx;
     color: #8f9ca2;
-    font-size: 14px;
+    font-size: 12px;
     label {
       margin-right: 20rpx;
     }

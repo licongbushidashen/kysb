@@ -1,9 +1,13 @@
 <template>
-  <view class="scrolls">
-    <view class="item">
+  <view class="scrolls" >
+    <view class="item12">
       <u-search placeholder="请输入关键字" v-model="keyword" @change="ban" :showAction="false"></u-search>
     </view>
+
     <u-list @scrolltolower="scrolltolower">
+      <u-loading-icon v-if="flag" text="加载中" textSize="18"></u-loading-icon>
+      <u-empty v-else-if="list.length==0" mode="list" style="margin-top: 50%;">
+      </u-empty>
       <u-list-item v-for="(item, index) in list" :key="index">
         <view class="list" @click="radioChange(index)">
           <view class="listnue">
@@ -14,9 +18,9 @@
               <radio :checked="item.active" />
             </div>
             <div class="listnue-r">
-              <p>姓名： {{ item.xm }}({{ item.gh }})</p>
-              <p>部门： {{ item.orgpathname }}</p>
-              <p>电话： {{ item.tel }}</p>
+              <p>姓名： {{ item.userName }}({{ item.jobNumber }})</p>
+              <p>部门： {{ item.department }}</p>
+              <!-- <p>电话： {{ item.phone }}</p> -->
             </div>
           </view>
         </view>
@@ -37,13 +41,14 @@ export default {
     return {
       keyword: "",
       list: [
-        { jobNumber: "000815", userName: "李小双", department: "部门", phone: '130000000000', active: false },
+      
       ],
       skipCount: 0,
       maxResultCount: 15,
       kes: {},
       userInfo: {},
-      index: 0
+      index: 0,
+      flag:true
     }
   },
   onLoad: function (o) {
@@ -94,6 +99,7 @@ export default {
     scrolltolower() {
       this.maxResultCount = this.maxResultCount + 15
       this.skipCount = this.skipCount + 15
+      this.flag=true
       this.loadmore()
     },
     loadmore() {
@@ -102,19 +108,31 @@ export default {
         skipCount: this.skipCount,
         keyword: this.keyword
       }
-      this.$res.post('/sb/api/Facility/Register/GetCardList', data, { "content-type": "application/json" }).then(r => {
-        r.items.forEach(e => {
+      this.$res.post(this.https+'/api/Facility/Register/GetUserList', data, { "content-type": "application/json" }).then(r => {
+        r.data.items.forEach(e => {
           e.active = false
         })
-        this.list = [...this.list, ...r.items]
+        this.list = [...this.list, ...r.data.items]
+        this.flag=false
       })
     }
   }
 }
 </script>
 <style lang="scss" scoped>
+    ::v-deep .uni-scroll-view-content>uni-view{
+    padding-top: 80rpx !important;
+  }
+.item12 {
+  z-index: 999;
+  position: fixed;
+  top: 0px;
+  display: flex;
+  width: 100%;
+}
+
 .buttons {
-  position: absolute;
+  position: fixed;
   bottom: 0px;
   display: flex;
   width: 100%;

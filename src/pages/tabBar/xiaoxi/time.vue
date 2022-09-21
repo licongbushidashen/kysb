@@ -14,7 +14,11 @@
         <u-icon slot="right" name="arrow-right"></u-icon>
       </u-form-item>
     </u--form>
-
+    <u-radio-group v-model="radiovalue1" placement="row"   @change="groupChange" style="margin-top: 20px;">
+      <u-radio   :customStyle="{ marginBottom: '8px',   flex: '1' }" v-for="(item, index) in radiolist1" :key="index"
+        :label="item.name" :name="item.name" @change="radioChange">
+      </u-radio>
+    </u-radio-group>
     <u-datetime-picker :show="showSex" v-model="value" :minDate="Number(new Date())" mode="datetime"
       @cancel="showSex=false" @confirm="sexSelect" :formatter="formatter"></u-datetime-picker>
     <view class="button1">
@@ -29,6 +33,8 @@ export default {
   components: {},
   data() {
     return {
+      radiovalue1:'',
+      radiolist1: [{ name: "15min" }, { name: "30min" }, { name: "1h" }, { name: "2h" }, { name: "4h" }],
       value: Number(new Date()),
       showSex: false,
       model1: {
@@ -61,6 +67,25 @@ export default {
 
   },
   methods: {
+    groupChange() {
+      let time = ''
+      if (this.radiovalue1 == '15min') {
+        time = new Date().getTime() + 1000 * 900
+      }
+      if (this.radiovalue1 == '30min') {
+        time = new Date().getTime() + 1000 * 1800
+      }
+      if (this.radiovalue1 == '1h') {
+        time = new Date().getTime() + 1 * 1000 * 3600
+      }
+      if (this.radiovalue1 == '2h') {
+        time = new Date().getTime() + 2 * 1000 * 3600
+      }
+      if (this.radiovalue1 == '4h') {
+        time = new Date().getTime() + 4 * 1000 * 3600
+      }
+     this.model1.userInfo.sex=this.format(new Date(time))
+    },
     formatter(type, value) {
       if (type === "year") {
         return `${value}年`
@@ -91,28 +116,23 @@ export default {
       return newDate;
     },
     sexSelect(e) {
-      debugger
       this.model1.userInfo.sex = this.format(new Date(e.value))
+      this.radiovalue1=''
       this.showSex = false
     },
     ok() {
       this.$refs.form1
         .validate()
         .then(res => {
-          let arr = uni.getStorageSync('sb')
+          let arr = uni.getStorageSync('djsb')
           let data = {
             registerIds: arr,
-            delayTime: this.model1.userInfo.sex
+            delayTime: this.model1.userInfo.sex+":00"
           }
-          this.$res.post('/sb/api/Facility/Register/DelayPreTime', data, { "content-type": "application/json" }).then(r => {
-            this.$refs.uToast.show({
-              type: 'success',
-              message: '操作成功',
-
-              complete() {
-                this.appclose()
-              }
-            })
+          this.$res.post(this.https+'/api/Facility/Register/DelayPreTime', data, { "content-type": "application/json" }).then(r => {
+            uni.navigateTo({
+				url: `/pages/tabBar/my/index2`,
+			})
           })
         })
         .catch(errors => { })
@@ -121,6 +141,11 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+  ::v-deep .u-radio__text{
+    font-size: 13px !important;
+    height: 18px !important;
+    line-height: 16px !important;
+  }
 ::v-deep .u-form-item__body__left__content__label {
   color: #8f9ca2;
 }

@@ -1,9 +1,13 @@
 <template>
-  <view class="scrolls">
-    <view class="item">
-      <u-search placeholder="请输入关键字" v-model="keyword" @change="ban" :showAction="false"></u-search>
+  <view class="scrolls" >
+    <view class="item12">
+      <u-search placeholder="请输入关键字" v-model="keyword" @change="ban" :showAction="false" class=""></u-search>
     </view>
-    <u-list @scrolltolower="scrolltolower">
+   
+    <u-list @scrolltolower="scrolltolower" >
+      <u-loading-icon v-if="flag" text="加载中" textSize="18" style="margin-top: 50%;"></u-loading-icon>
+      <u-empty v-else-if="list.length==0" mode="list" style="margin-top: 50%;">
+      </u-empty>
       <u-list-item v-for="(item, index) in list" :key="index">
         <view class="list" @click="radioChange(index)">
           <view class="listnue">
@@ -14,9 +18,9 @@
               <radio :checked="item.active" />
             </div>
             <div class="listnue-r">
-              <p>{{ item.itemCode }}</p>
-              <p>{{ item.dutyUser }}</p>
-              <p>{{ item.itemName }}</p>
+              <p>{{ item.code }}</p>
+              <!-- <p>{{ item.chargE_NAME }}</p> -->
+              <p>{{ item.name }}</p>
             </div>
           </view>
         </view>
@@ -24,7 +28,7 @@
     </u-list>
     <div class="buttons">
       <u-button text="取消" @click="goback"></u-button>
-      <u-button text="确定" :type="kes.itemName ? 'primary' : 'info'" @click="ok"></u-button>
+      <u-button text="确定" :type="kes.name ? 'primary' : 'info'" @click="ok"></u-button>
     </div>
   </view>
 </template>
@@ -35,16 +39,21 @@ export default {
   components: {},
   data() {
     return {
+      flag:true,
       keyword: "",
       list: [
-        { itemCode: "经费卡号", dutyUser: "负责人", itemName: "项目名称", active: false },
-        { itemCode: "经费卡号", dutyUser: "负责人", itemName: "项目名称", active: false }
+    
       ],
       kes: {},
+      skipCount : 1,
+      maxResultCount :15,
+      index: 0,
       userInfo: {}
     }
   },
-  onLoad: function (o) { },
+  onLoad: function (o) { 
+    this.index = o.j
+  },
   mounted() {
     this.loadmore()
   },
@@ -53,15 +62,14 @@ export default {
       uni.navigateBack()
     },
     ok() {
-      if (!this.kes.itemName) {
+      if (!this.kes.name) {
         return
       }
       let userInfo = uni.getStorageSync("userInfo")
       userInfo.project = this.kes
       uni.setStorageSync("userInfo", userInfo)
-      console.log(userInfo)
       uni.navigateTo({
-        url: `/pages/tabBar/shepun/register?storage=1`
+        url: `/pages/tabBar/shepun/register?storage=1&j=${this.index}`
       })
     },
     ban: lodash.throttle(function (id) {
@@ -89,29 +97,46 @@ export default {
       })
     },
     scrolltolower() {
-      this.maxResultCount = this.maxResultCount + 15
-      this.skipCount = this.skipCount + 15
+      this.skipCount = this.skipCount +1
+      this.flag=true
       this.loadmore()
     },
     loadmore() {
+      
       let data = {
         maxResultCount: this.maxResultCount,
         skipCount: this.skipCount,
         keyword: this.keyword
       }
-      this.$res.post('/sb/api/Facility/Register/GetCardList', data, { "content-type": "application/json" }).then(r => {
-        r.items.forEach(e => {
+      this.$res.post(this.https+'/api/Facility/Register/GetCardList', data, { "content-type": "application/json" }).then(r => {
+
+        r.data.items.forEach(e => {
           e.active = false
         })
-        this.list = [...this.list, ...r.items]
+        this.list = [...this.list, ...r.data.items]
+        console.log(this.list)
+        this.flag=false
       })
     }
   }
 }
 </script>
 <style lang="scss" scoped>
+  ::v-deep .uni-scroll-view-content>uni-view{
+    padding-top: 80rpx !important;
+  }
+.item12{
+      z-index: 999;
+    position: fixed;
+    top: 10rpx;
+    left: 10rpx;
+    right: 10rpx;
+    display: flex;
+
+
+}
 .buttons {
-  position: absolute;
+  position: fixed;
   bottom: 0px;
   display: flex;
   width: 100%;

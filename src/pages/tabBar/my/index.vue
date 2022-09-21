@@ -10,50 +10,45 @@
       <u-list-item v-for="(item, index) in list" :key="index">
         <view class="list" :class="item.active ? 'active' : '111'" @click="actives(index)">
           <view>
-            <image :src="item.img" mode="" style="width: 64px; height: 65px"></image>
+            <image :src="item.url" mode="" style="width: 64px; height: 65px"></image>
           </view>
           <view class="tips">
             <div>
               <!-- <text>{{ item.name }}</text> -->
               <text>
-                {{ item.brand }}</text>
+                {{ item.registerName }}</text>
             </div>
             <div style="margin: 10rpx 0px">
               <label for="">本次使用时长:</label>
-              <text>{{ item.minutes }}</text>
+              <text>{{ item.minutes |ChangeHourMinutestr}}</text>
             </div>
-            <div>
-              <label for="">支撑科研项目:</label>
-              <text>{{ item.itemName }}</text>
-            </div>
-            <div>
-              <label for="">本年度累计使用时长:</label>
-              <text>{{ item.totalMinutes }}</text>
-            </div>
-            <div>
-              <label for="">占总机时:</label>
-              <text>{{ item.selfTotalMinutes }}</text>
+            <div style="margin: 10rpx 0px">
+              <label for="">原预计结束时间:</label>
+              <text>{{ item.presetTime }}</text>
             </div>
           </view>
         </view>
       </u-list-item>
     </u-list>
     <view class="button1">
-      <u-button type="primary" text="继续使用" class="primarys" @click="ok"></u-button>
-      <u-button text="下机" class="primarys" @click="xiaji"></u-button>
+      <u-button type="primary" text="延长机时" class="primarys" @click="ok"></u-button>
+      <u-button text="确认下机" class="primarys" @click="xiaji"></u-button>
     </view>
   </view>
 </template>
 <script>
-import hys from "../../../static/img/hys.png"
+import i1 from "../../../static/icon/1.jpg"
+import i2 from "../../../static/icon/2.jpeg"
+import i3 from "../../../static/icon/3.jpeg"
+import i4 from "../../../static/icon/4.jpg"
+import i5 from "../../../static/icon/5.jpeg"
+import i6 from "../../../static/icon/6.jpeg"
 document.getElementsByTagName("title")[0].innerText = ""
 export default {
   components: {},
   data() {
     return {
       list: [
-        { name: "火花", brand: "中国造", type: "001", size: "80*90", img: hys, active: false },
-        { name: "火花", brand: "中国造", type: "001", size: "80*90", img: hys, active: false }
       ]
     }
   },
@@ -74,13 +69,13 @@ export default {
         client_secret: "1q2w3e*"
       }
       this.$res
-        .post('/sbauth/connect/token', params, {
+        .post(this.rzss+'/connect/token', params, {
           "content-type": "application/x-www-form-urlencoded;charset=UTF-8"
         })
         .then(res => {
           if (!res.error) {
             this.$u.vuex("vuex_token", res.data.access_token)
-            this.$res.get(`/sb/api/abp/application-configuration`).then(info => {
+            this.$res.get(`${this.https}/api/abp/application-configuration`).then(info => {
               if (!res.error) {
                 this.$u.vuex("vuex_user", info.data)
                 localStorage.setItem("vuex_userId", info.data.currentUser.id)
@@ -111,8 +106,25 @@ export default {
   methods: {
     dto(arr) {
 
-      this.$res.post('/sb/api/Facility/Register/GetOfflineRemind', arr, { "content-type": "application/json" }).then(r => {
-        this.list = r
+      this.$res.post(this.https+'/api/Facility/Register/GetOfflineRemind', arr, { "content-type": "application/json" }).then(r => {
+        console.log(r)
+        for(let i=0;i<r.data.length;i++){
+          if(r.data[i].registerNo=='1001'){
+            r.data[i].url=i1
+          }else if(r.data[i].registerNo=='1002'){
+            r.data[i].url=i2
+          }else if(r.data[i].registerNo=='1003'){
+            r.data[i].url=i3
+          }else if(r.data[i].registerNo=='2001'){
+            r.data[i].url=i4
+          }else if(r.data[i].registerNo=='2002'){
+            r.data[i].url=i5
+          }else if(r.data[i].registerNo=='2003'){
+            r.data[i].url=i6
+          }
+          // r.data[i].minutes=this.ChangeHourMinutestr(r.data[i].minutes)
+        }
+        this.list = r.data
       })
     },
     xiaji() {
@@ -120,7 +132,7 @@ export default {
       let data = {
         registerNos: arr
       }
-      this.$res.post('/sb/api/Facility/Register/Offline', data, { "content-type": "application/json" }).then(r => {
+      this.$res.post(this.https+'/api/Facility/Register/Offline', data, { "content-type": "application/json" }).then(r => {
         this.appclose()
       })
     },
@@ -130,14 +142,10 @@ export default {
     },
     sexSelect(e) { },
     ok() {
-      this.$refs.form1
-        .validate()
-        .then(res => {
           uni.navigateTo({
             url: `/pages/tabBar/xiaoxi/time`
           })
-        })
-        .catch(errors => { })
+        // .catch(errors => { })
     }
   }
 }
@@ -150,8 +158,8 @@ export default {
 
 .list.active::before {
   content: "";
-  width: 12px;
-  height: 12px;
+  width: 22px;
+  height: 22px;
   position: absolute;
   right: 0px;
   bottom: 0px;
@@ -161,14 +169,15 @@ export default {
 
 .list.active::after {
   content: "";
-  width: 12px;
-  height: 12px;
+  width: 22px;
+  height: 20px;
   position: absolute;
-  right: -1px;
+  right: -3px;
   bottom: -2px;
   background-image: url(../../../static/img/dui.png);
   background-size: 100% 100%;
 }
+
 
 .list {
   display: flex;
@@ -179,7 +188,7 @@ export default {
   .tips {
     margin-left: 20rpx;
     color: #8f9ca2;
-    font-size: 14px;
+    font-size: 12px;
 
     label {
       margin-right: 20rpx;

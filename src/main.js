@@ -53,6 +53,16 @@ Vue.filter("formatDate", function (oldDate, fmt = "yyyy-MM-dd hh:mm", placeholde
   }
   return fmt
 })
+Vue.filter('ChangeHourMinutestr',function(str){
+  if (str !== "0" && str !== "" && str !== null) {
+    return ((Math.floor(str / 60)).toString().length < 2 ?  + (Math.floor(str / 60)).toString() : 
+    (Math.floor(str / 60)).toString()) + "时" + ((str % 60).toString().length < 2 ?  + (str % 60).toString() : (str % 60).toString())+'分';
+    }
+    else
+    {
+    return "";
+    }
+})
 // Vue.directive('imageLoad',imageLoad)
 Vue.config.productionTip = false
 Vue.prototype.$store = store
@@ -68,22 +78,24 @@ let R = httpApi(1)
 Vue.prototype.$res = R
 if (process.env.NODE_ENV === "production") {
   console.log(1)
-  Vue.prototype.https = "https://hqauth.zhejianglab.com"
+  Vue.prototype.https = "yqdj-test.zhejianglab.com"
   Vue.prototype.urlhttp = "https://hqauth.zhejianglab.com/api/logistics/files/www/"
   Vue.prototype.rzs = "https://hqauth.zhejianglab.com/.well-known/openid-configuration"
-  Vue.prototype.rzss = "https://hqauth.zhejianglab.com/connect/token"
+  Vue.prototype.rzss = "yqdj-auth-test.zhejianglab.com"
 } else {
   console.log(2)
   // Vue.prototype.https = "https://zjlab-logistics.demo.wy5u.com"
   // Vue.prototype.urlhttp = "https://zjlab-logistics.demo.wy5u.com/api/logistics/files/www/"
   // Vue.prototype.rzs = "https://zjlab-logistics-auth.demo.wy5u.com/.well-known/openid-configuration"
   // Vue.prototype.rzss = "https://zjlab-logistics-auth.demo.wy5u.com/connect/token"
-  Vue.prototype.https = 'https://sb.demo.wy5u.com'
+  // Vue.prototype.https = 'https://sb.demo.wy5u.com'
+  Vue.prototype.https = '/sb'
   Vue.prototype.urlhttp =
     'https://sb-auth.demo.wy5u.com/api/logistics/files/www/'
   Vue.prototype.rzs =
     'https://sb-auth.demo.wy5u.com/.well-known/openid-configuration'
-  Vue.prototype.rzss = 'https://sb-auth.demo.wy5u.com'
+  // Vue.prototype.rzss = 'https://sb-auth.demo.wy5u.com'
+  Vue.prototype.rzss='/sbauth'
 }
 
 function openphone(val){
@@ -106,6 +118,17 @@ jsBridge.invoke('dialPhoneCall', {
 function appclose(){
   jsBridge.invoke('close', {})
 }
+function ChangeHourMinutestr(str) {
+  if (str !== "0" && str !== "" && str !== null) {
+  return ((Math.floor(str / 60)).toString().length < 2 ?  + (Math.floor(str / 60)).toString() : 
+  (Math.floor(str / 60)).toString()) + "时" + ((str % 60).toString().length < 2 ?  + (str % 60).toString() : (str % 60).toString())+'分';
+  }
+  else
+  {
+  return "";
+  }
+  }
+  Vue.prototype.ChangeHourMinutestr = ChangeHourMinutestr
 Vue.prototype.openphone = openphone
 Vue.prototype.appclose = appclose
 function openUrlWin(url, _this) {

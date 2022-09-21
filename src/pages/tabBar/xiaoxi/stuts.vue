@@ -9,13 +9,13 @@
     <u--form labelPosition="left" :model="model1" :rules="rules" ref="form1">
       <u-form-item label="设备状态" labelWidth="auto" :labelStyle="labelStyle" prop="userInfo.sex" borderBottom
         @click="showSex = true" ref="item1">
-        <u--input v-model="model1.userInfo.sex" disabled disabledColor="#ffffff" placeholder="请选择状态" border="none">
+        <u--input v-model="model1.userInfo.sex" disabled disabledColor="#ffffff" placeholder="请选择状态" border="none" >
         </u--input>
         <u-icon slot="right" name="arrow-right"></u-icon>
       </u-form-item>
       <u-form-item label="异常原因" labelWidth="auto" prop="userInfo.remarks" borderBottom ref="item2"
         v-if="model1.userInfo.sex=='异常'">
-        <u--textarea v-model="model1.userInfo.remarks" placeholder="请输入异常原因" autoHeight></u--textarea>
+        <u--textarea v-model="model1.userInfo.remarks" placeholder="请输入异常原因" autoHeight style="border:0px"></u--textarea>
 
       </u-form-item>
     </u--form>
@@ -35,7 +35,8 @@ export default {
   data() {
     return {
       labelStyle: {
-        color: '#8f9ca2'
+        color: '#8f9ca2',
+        marginRight:'20rpx'
       },
       showSex: false,
       model1: {
@@ -75,20 +76,28 @@ export default {
     ok() {
       this.$refs.form1.validate().then(res => {
         let arr = uni.getStorageSync('sb')
+     
         let data = {
           registerNos: arr,
-          status: this.model1.userInfo.sex == '完好' ? his.model1.userInfo.sex : his.model1.userInfo.remarks
+          status: this.model1.userInfo.sex == '完好' ? this.model1.userInfo.sex : this.model1.userInfo.remarks
         }
-        this.$res.post('/sb/api/Facility/Register/Offline', data, { "content-type": "application/json" }).then(r => {
-          if (arr.length > 1) {
-            uni.navigateTo({
-              url: `/pages/tabBar/shepun/more`,
+        this.$res.post(this.https+'/api/Facility/Register/Offline', data, { "content-type": "application/json" }).then(r => {
+          // this.$refs.uToast.show({
+          //       type: "success",
+          //       message: "下机成功",               
+          //     });
+                       uni.navigateTo({
+              url: `/pages/tabBar/shepun/index`,
             })
-          } else {
-            uni.navigateTo({
-              url: `/pages/tabBar/shepun/details`,
-            })
-          }
+          // if (arr.length > 1) {
+          //   uni.navigateTo({
+          //     url: `/pages/tabBar/shepun/more`,
+          //   })
+          // } else {
+          //   uni.navigateTo({
+          //     url: `/pages/tabBar/shepun/details`,
+          //   })
+          // }
         })
       }).catch(errors => {
 
@@ -98,6 +107,12 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+  ::v-deep .u-textarea{
+    padding:9px 0px !important
+  }
+  ::v-deep .u-form-item__body__left{
+    margin-right: 20rpx !important;
+  }
 ::v-deep .u-form-item__body__left__content__label {
   color: #8f9ca2
 }

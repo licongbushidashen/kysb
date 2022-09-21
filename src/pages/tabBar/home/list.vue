@@ -2,7 +2,7 @@
   <view>
     <!-- <u-navbar title="公告通知" @rightClick="rightClick" @leftClick="leftClick">
     </u-navbar> -->
-
+    <u-loading-icon text="加载中"></u-loading-icon>
   </view>
 </template>
 <script>
@@ -21,7 +21,6 @@ export default {
   },
 
   mounted() {
-    debugger
     var query = this.$route.query
     if (query.accessToken) {
       this.$u.vuex("query_token", query.accessToken)
@@ -37,23 +36,23 @@ export default {
         client_secret: "1q2w3e*"
       }
       this.$res
-        .post('/sbauth/connect/token', params, {
+        .post(this.rzss+'/connect/token', params, {
           "content-type": "application/x-www-form-urlencoded;charset=UTF-8"
         })
         .then(res => {
           if (!res.error) {
             this.$u.vuex("vuex_token", res.data.access_token)
-            this.$res.get(`/sb/api/abp/application-configuration`).then(info => {
+            this.$res.get(`${this.https}/api/abp/application-configuration`).then(info => {
               if (!res.error) {
                 this.$u.vuex("vuex_user", info.data)
                 localStorage.setItem("vuex_userId", info.data.currentUser.id)
                 let arr = query.q.split(',')
+                console.log(arr,222)
                 arr.forEach(e => {
                   e = e + ''
                 });
                 this.$res
-                  .post('/sb/api/Facility/Register/IsUsed', arr, { "content-type": "application/json" }).then(r => {
-                    debugger
+                  .post(this.https+'/api/Facility/Register/IsUsed', arr, { "content-type": "application/json" }).then(r => {
                     let isUsed = false, isUser = false
                     uni.setStorageSync('sb', arr);
                     r.data.forEach(e => {

@@ -10,7 +10,7 @@
       <u-list-item v-for="(item, index) in list" :key="index">
         <view class="list" :class="item.active ? 'active' : '111'" @click="actives(index)">
           <view>
-            <image :src="item.img" mode="" style="width: 64px; height: 65px"></image>
+            <image :src="item.url" mode="" style="width: 64px; height: 65px"></image>
           </view>
           <view class="tips">
             <div>
@@ -19,12 +19,20 @@
                 {{ item.brand }}</text>
             </div>
             <div style="margin: 10rpx 0px" @click.stop="show=true">
+              <label for="">型号:</label>
+              <text>{{ item.model }}</text>
+            </div>
+            <div style="margin: 10rpx 0px" @click.stop="show=true">
+              <label for="">规格:</label>
+              <text>{{ item.size }}</text>
+            </div>
+            <div style="margin: 10rpx 0px" @click.stop="show=true">
               <label for="">当前占用人:</label>
-              <text>{{ item.name }}</text>
+              <text>{{ item.userName }}</text>
             </div>
             <div style="margin: 10rpx 0px">
               <label for="">预计下机时间:</label>
-              <text>{{ item.name }}</text>
+              <text>{{ item.presetTime }}</text>
             </div>
 
           </view>
@@ -58,6 +66,12 @@
   </view>
 </template>
 <script>
+        import i1 from "../../../static/icon/1.jpg"
+import i2 from "../../../static/icon/2.jpeg"
+import i3 from "../../../static/icon/3.jpeg"
+import i4 from "../../../static/icon/4.jpg"
+import i5 from "../../../static/icon/5.jpeg"
+import i6 from "../../../static/icon/6.jpeg"
 import hys from "../../../static/img/hys.png"
 document.getElementsByTagName("title")[0].innerText = ""
 export default {
@@ -66,10 +80,7 @@ export default {
     return {
       show:false,
       presetTime:'',
-      list: [
-        { name: "火花", brand: "中国造", type: "001", size: "80*90", img: hys, active: false },
-        { name: "火花", brand: "中国造", type: "001", size: "80*90", img: hys, active: false }
-      ]
+      list: []
     }
   },
   onLoad() { },
@@ -85,19 +96,24 @@ export default {
 
     dto() {
       let arr = uni.getStorageSync('sb')
-      this.$res.post('/sb/api/Facility/Register/GetListByRegisterNo', arr, { "content-type": "application/json" }).then(r => {
-        r.forEach(e => {
-          if (e.serviceCategory == 0) {
-            e.serviceCategoryName = '支撑本研究中心科研项目'
-          }
-          if (e.serviceCategory == 1) {
-            e.serviceCategoryName = '支撑其他科研中心科研项目'
-          }
-          if (e.serviceCategory == 2) {
-            e.serviceCategoryName = '为外部提供支撑服务'
-          }
+      this.$res.post(this.https+'/api/Facility/Register/GetListByRegisterNo', arr, { "content-type": "application/json" }).then(r => {
+        r.data.forEach(e => {
+          if(e.registerNo=='1001'){
+        e.url=i1
+      }else if(e.registerNo=='1002'){
+        e.url=i2
+      }else if(e.registerNo=='1003'){
+        e.url=i3
+      }else if(e.registerNo=='2001'){
+        e.url=i4
+      }else if(e.registerNo=='2002'){
+        e.url=i5
+      }else if(e.registerNo=='2003'){
+        e.url=i6
+      }
+          e.active=true
         });
-        // this.list = r
+        this.list = r.data
       })
     },
     actives(index) {
@@ -112,7 +128,7 @@ export default {
       let data = {
         registerNos: arr
       }
-      this.$res.post('/sb/api/Facility/Register/Offline', data, { "content-type": "application/json" }).then(r => {
+      this.$res.post(this.https+'/api/Facility/Register/Offline', data, { "content-type": "application/json" }).then(r => {
         if (arr.length > 1) {
           uni.navigateTo({
             url: `/pages/tabBar/shepun/more`,
@@ -137,8 +153,8 @@ export default {
 
 .list.active::before {
   content: "";
-  width: 12px;
-  height: 12px;
+  width: 22px;
+  height: 22px;
   position: absolute;
   right: 0px;
   bottom: 0px;
@@ -148,10 +164,10 @@ export default {
 
 .list.active::after {
   content: "";
-  width: 12px;
-  height: 12px;
+  width: 22px;
+  height: 20px;
   position: absolute;
-  right: -1px;
+  right: -3px;
   bottom: -2px;
   background-image: url(../../../static/img/dui.png);
   background-size: 100% 100%;
@@ -166,7 +182,7 @@ export default {
   .tips {
     margin-left: 20rpx;
     color: #8f9ca2;
-    font-size: 14px;
+    font-size: 12px;
 
     label {
       margin-right: 20rpx;

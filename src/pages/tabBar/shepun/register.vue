@@ -1,102 +1,342 @@
 <template>
   <view class="scrolls">
     <u-toast ref="uToast"></u-toast>
+    <p style="    padding: 0px;    text-align: center;    margin: 22px 0px;">科研仪器设备使用登记表</p>
     <u--form labelPosition="left" :model="model1" :rules="rules" ref="form1">
-      <u-form-item label="设备状态" labelWidth="auto" prop="userInfo.status" borderBottom ref="item1" class="required">
-        <u--input placeholder="请输入设备状态" border="surround" clearable v-model="model1.userInfo.status"></u--input>
+      <u-form-item
+        label="设备状态"
+        labelWidth="auto"
+        prop="userInfo.status"
+        borderBottom
+        ref="item1"
+        class="required"
+      >
+        <u--input
+          placeholder="请输入设备状态"
+          border="surround"
+          clearable
+          v-model="model1.userInfo.status"
+        ></u--input>
         <!-- <u-icon slot="right" name="arrow-right"></u-icon> -->
       </u-form-item>
-      <u-form-item label="实验/样品名称" labelWidth="auto" prop="userInfo.sampleName" borderBottom ref="item1"
-        class="required" @click="showsample = true">
-        <u--input class="yangshixiugai" v-model="model1.userInfo.sampleName" disabled disabledColor="#ffffff" placeholder="请选择实验/样品名称"
-          border="none"></u--input>
+      <u-form-item
+        label="实验/样品名称"
+        labelWidth="auto"
+        prop="userInfo.sampleName"
+        borderBottom
+        ref="item1"
+        class="required"
+        @click="showsample = true"
+      >
+        <u--input
+        ref="inputs"
+          class="yangshixiugai"
+          :focus="fstates"
+          v-model="model1.userInfo.sampleName"
+          :disabled="!fstates1"
+          disabledColor="#ffffff"
+          placeholder="请选择实验/样品名称"
+          border="none"
+        ></u--input>
         <u-icon slot="right" name="arrow-right"></u-icon>
       </u-form-item>
-      <u-form-item label="样品数量" labelWidth="auto" prop="userInfo.quantity" borderBottom ref="item1" class="required">
-        <u--input placeholder="请输入样品数量" border="surround" clearable v-model="model1.userInfo.quantity">
+      <u-form-item
+        label="样品数量"
+        labelWidth="auto"
+        prop="userInfo.quantity"
+        borderBottom
+        ref="item1"
+        class="required"
+      >
+        <u--input
+          placeholder="请输入样品数量"
+          border="surround"
+          clearable
+          v-model="model1.userInfo.quantity"
+        >
         </u--input>
         <!-- <u-icon slot="right" name="arrow-right"></u-icon> -->
       </u-form-item>
-      <u-form-item label="预估结束时间" labelWidth="auto" prop="userInfo.sex" borderBottom @click="opentime" ref="item1">
-        <u--input class="yangshixiugai" v-model="model1.userInfo.presetTime" disabled disabledColor="#ffffff" placeholder="请选择时间"
-          border="none">
+      <u-form-item
+        label="预估结束时间"
+        labelWidth="auto"
+        prop="userInfo.sex"
+        borderBottom
+        @click="opentime"
+        ref="item1"
+      >
+        <u--input
+          class="yangshixiugai"
+          v-model="model1.userInfo.presetTime"
+          disabled
+          disabledColor="#ffffff"
+          placeholder="请选择时间"
+          border="none"
+        >
         </u--input>
         <u-icon slot="right" name="arrow-right"></u-icon>
       </u-form-item>
-      <u-form-item label="支撑服务类型" labelWidth="auto" prop="userInfo.serviceCategory" borderBottom ref="item1"
-        class="required" @click="showstype = true">
-        <u--input class="yangshixiugai" v-model="model1.userInfo.serviceCategory" disabled disabledColor="#ffffff" placeholder="请选择支撑服务类型"
-          border="none">
+      <u-form-item
+        label="支撑服务类型"
+        labelWidth="auto"
+        prop="userInfo.serviceCategory"
+        borderBottom
+        ref="item1"
+        class="required"
+        @click="showstype = true"
+      >
+        <u--input
+          class="yangshixiugai"
+          v-model="model1.userInfo.serviceCategory"
+          disabled
+          disabledColor="#ffffff"
+          placeholder="请选择支撑服务类型"
+          border="none"
+        >
         </u--input>
         <u-icon slot="right" name="arrow-right"></u-icon>
       </u-form-item>
-      <u-form-item  label="项目名称" labelWidth="auto" prop="userInfo.project" borderBottom ref="item1" class="required"
-        @click="project">
-        <u--input class="yangshixiugai" v-model="model1.userInfo.project.itemName" disabled disabledColor="#ffffff" placeholder="请选择支撑服务类型"
-          border="none"></u--input>
+      <!-- <u-form-item
+        label="项目名称"
+        labelWidth="auto"
+        prop="userInfo.project"
+        borderBottom
+        ref="item1"
+        class="required"
+        @click="project"
+      >
+        <u--input
+          class="yangshixiugai"
+          v-model="model1.userInfo.project.name"
+          disabled
+          disabledColor="#ffffff"
+          placeholder="请选择项目名称"
+          border="none"
+        ></u--input>
         <u-icon slot="right" name="arrow-right"></u-icon>
       </u-form-item>
-      <u-form-item  label="项目代码" labelWidth="auto" prop="userInfo.type" borderBottom ref="item1" class="required">
-        <u--input class="yangshixiugai" v-model="model1.userInfo.project.itemCode" disabled disabledColor="#ffffff" placeholder="请选择支撑服务类型"
-          border="none"></u--input>
-      </u-form-item>
-      <u-form-item label="项目负责人" labelWidth="auto" prop="userInfo.type" borderBottom ref="item1" class="required">
-        <u--input class="yangshixiugai" v-model="model1.userInfo.project.dutyUser" disabled disabledColor="#ffffff" placeholder="请选择支撑服务类型"
-          border="none"></u--input>
-      </u-form-item>
+      <u-form-item
+        label="项目代码"
+        labelWidth="auto"
+        prop="userInfo.type"
+        borderBottom
+        ref="item1"
+        class="required"
+      >
+        <u--input
+          class="yangshixiugai"
+          v-model="model1.userInfo.project.code"
+          disabled
+          disabledColor="#ffffff"
+          placeholder="请选择项目代码"
+          border="none"
+        ></u--input>
+      </u-form-item> -->
+      <!-- <u-form-item
+        label="项目负责人"
+        labelWidth="auto"
+        prop="userInfo.type"
+        borderBottom
+        ref="item1"
+        class="required"
+      >
+        <u--input
+          class="yangshixiugai"
+          v-model="model1.userInfo.project.chargE_NAME"
+          disabled
+          disabledColor="#ffffff"
+          placeholder="请选择支撑服务类型"
+          border="none"
+        ></u--input>
+      </u-form-item> -->
     </u--form>
-    <view v-if="model1.userInfo.serviceCategory">
-      <view v-for="(item, i) in clients" :key="i" class="wtr">
-        <p class="addwt">
-          委托人信息
-          <u-icon name="close-circle" color="#2979ff" size="28" @click="splies(i)"  style="    margin-top: 3px;    margin-left: 5px;"></u-icon>
+    <view>
+      <view v-for="(item, i) in clients2" :key="i" class="wtr" >
+        <p class="addwt addwt1">
+          项目信息
+          <u-icon
+            name="close-circle"
+            color="#2979ff"
+            size="28"
+            v-if="i!=0"
+            @click="splies2(i)"
+            style="margin-top: 3px; margin-left: 5px"
+          ></u-icon>
         </p>
-        <view @click="openurl(i)"><label for="">姓名</label>
-          <u--input v-model="item.userName" :disabled="model1.userInfo.type != '为外部提供支撑服务'" disabledColor="#ffffff"
-            placeholder="请输入姓名" border="none"></u--input>
+        <view @click="project(i)" class="urtt">
+          <label for="">项目名称</label>
+          <u--input
+            v-model="item.name"
+            disabledColor="#ffffff"
+            disabled
+            placeholder="请输入项目名称"
+            border="none"
+          ></u--input>
+         
         </view>
-        <view><label for="">部门</label>
-          <u--input v-model="item.department" :disabled="model1.userInfo.type != '为外部提供支撑服务'" disabledColor="#ffffff"
-            placeholder="请输入部门" border="none"></u--input>
+        <div v-if="item.name1" style="    position: relative;    height: 28rpx;">
+          <p  style="    font-size: 12px;    line-height: 12px;     margin-left: auto;   color: #f56c6c;    position: absolute;    right: 0px;">请输入项目名称</p>
+        </div>
+      
+        <view class="urtt"
+          ><label for="">项目代码</label>
+          <u--input
+            v-model="item.code"
+            disabledColor="#ffffff"
+            placeholder="请输入项目代码"
+            border="none"
+          ></u--input>
         </view>
-        <view><label for="">电话</label>
-          <u--input v-model="item.phone" :disabled="model1.userInfo.type != '为外部提供支撑服务'" disabledColor="#ffffff"
-            placeholder="请输入电话" border="none"></u--input>
+        <div v-if="item.code1" style="    position: relative;    height: 28rpx;">
+          <p  style="font-size: 12px;    line-height: 12px;     margin-left: auto;   color: #f56c6c;    position: absolute;    right: 0px;">请输入项目代码</p>
+        </div>
+        <view class="urtt"
+          ><label for="">负责人</label>
+          <u--input
+            v-model="item.chargE_NAME"
+            disabledColor="#ffffff"
+            placeholder="请输入负责人"
+            border="none"
+          ></u--input>
         </view>
+        <div v-if="item.chargE_NAME1" style="    position: relative;    height: 28rpx;">
+          <p  style="    font-size: 12px;    line-height: 12px;     margin-left: auto;   color: #f56c6c;    position: absolute;    right: 0px;">请输入负责人</p>
+        </div>
       </view>
-      <p class="addwt" @click="addpush">
-        <u-icon name="plus-circle" color="#2979ff" size="28" style="    margin-top: 3px;    margin-right: 5px;"></u-icon><span>添加委托人</span>
+      <p class="addwt" @click="addpush2" style="    padding-left: 18rpx;">
+        <u-icon
+          name="plus-circle"
+          color="#2979ff"
+          size="28"
+          style="margin-top: 3px; margin-right: 5px"
+        ></u-icon
+        ><span>添加项目</span>
       </p>
     </view>
-    <u-action-sheet :show="showsample" :actions="list" @close="showsample = false" @select="sample"> </u-action-sheet>
-    <u-action-sheet :show="showstype" :actions="list1" @close="showstype = false" @select="sample1"> </u-action-sheet>
+    <view v-if="model1.userInfo.serviceCategory">
+      <view v-for="(item, i) in clients" :key="i" class="wtr" >
+        <p class="addwt addwt1">
+          委托人信息
+          <u-icon
+            name="close-circle"
+            color="#2979ff"
+            size="28"
+            v-if="i!=0"
+            @click="splies(i)"
+            style="margin-top: 3px; margin-left: 5px"
+          ></u-icon>
+        </p>
+        <view @click="openurl(i)" class="urtt">
+          <label for="">姓名</label>
+          <u--input
+            v-model="item.userName"
+            :disabled="model1.userInfo.serviceCategory != '为外部提供支撑服务'"
+            disabledColor="#ffffff"
+            placeholder="请输入姓名"
+            border="none"
+          ></u--input>
+         
+        </view>
+        <div v-if="item.userName1" style="    position: relative;    height: 28rpx;">
+          <p  style="    font-size: 12px;    line-height: 12px;     margin-left: auto;   color: #f56c6c;    position: absolute;    right: 0px;">请输入姓名</p>
+        </div>
+      
+        <view class="urtt"
+          ><label for="">{{model1.userInfo.serviceCategory != '为外部提供支撑服务'?'部门':'单位'}}</label>
+          <u--input
+            v-model="item.department"
+            :disabled="model1.userInfo.serviceCategory != '为外部提供支撑服务'"
+            disabledColor="#ffffff"
+            :placeholder="model1.userInfo.serviceCategory != '为外部提供支撑服务'?'请输入部门':'请输入单位' "
+            border="none"
+          ></u--input>
+        </view>
+        <div v-if="item.department1" style="    position: relative;    height: 28rpx;">
+          <p  style="    font-size: 12px;    line-height: 12px;     margin-left: auto;   color: #f56c6c;    position: absolute;    right: 0px;">请输入部门</p>
+        </div>
+        <view class="urtt"
+          ><label for="">电话</label>
+          <u--input
+            v-model="item.phone"
+            :disabled="model1.userInfo.serviceCategory != '为外部提供支撑服务'"
+            disabledColor="#ffffff"
+            placeholder="请输入电话"
+            border="none"
+          ></u--input>
+        </view>
+        <div v-if="item.phone1" style="    position: relative;    height: 28rpx;">
+          <p  style="    font-size: 12px;    line-height: 12px;     margin-left: auto;   color: #f56c6c;    position: absolute;    right: 0px;">请输入电话</p>
+        </div>
+      </view>
+      <p class="addwt" @click="addpush" style="    padding-left: 18rpx;">
+        <u-icon
+          name="plus-circle"
+          color="#2979ff"
+          size="28"
+          style="margin-top: 3px; margin-right: 5px"
+        ></u-icon
+        ><span>添加委托人</span>
+      </p>
+    </view>
+    <u-action-sheet
+      :show="showsample"
+      :actions="list"
+      @close="showsample = false"
+      @select="sample"
+    >
+    </u-action-sheet>
+    <u-action-sheet
+      :show="showstype"
+      :actions="list1"
+      @close="showstypes"
+      @select="sample1"
+    >
+    </u-action-sheet>
     <view class="button1">
-      <u-button type="primary" text="确认" class="primarys" @click="ok"></u-button>
+      <u-button
+        type="primary"
+        text="确认"
+        class="primarys"
+        @click="ok"
+      ></u-button>
       <u-button text="取消"></u-button>
     </view>
   </view>
 </template>
 <script>
-document.getElementsByTagName("title")[0].innerText = ""
+document.getElementsByTagName("title")[0].innerText = "";
 export default {
   components: {},
   data() {
     return {
       clients: [{}],
+      clients2:[{}],
       showsample: false,
       showstype: false,
-      list: [{ name: "测试" }, { name: "加工" }, { name: "计算" }, { name: "分析" }],
-      list1: [{ name: "支撑本研究中心科研项目" }, { name: "支撑其他科研中心科研项目" }, { name: "为外部提供支撑服务" }],
+      fstates:false,
+      fstates1:false,
+      list: [
+        { name: "测试" },
+        { name: "加工" },
+        { name: "计算" },
+        { name: "分析" },
+        { name: "自定义" },
+      ],
+      list1: [
+        { name: "支撑本研究中心科研项目" },
+        { name: "支撑其他科研中心科研项目" },
+        { name: "为外部提供支撑服务" },
+      ],
       model1: {
         userInfo: {
           status: "完好",
           sampleName: "测试",
-          quantity: '',
+          quantity: "",
           serviceCategory: "",
           remarks: "",
           presetTime: "",
-          project: {}
-        }
+          project: {},
+        },
       },
       rules: {
         "userInfo.status": {
@@ -104,170 +344,289 @@ export default {
           min: 1,
           required: true,
           message: "请输入设备当前状态",
-          trigger: ["blur", "change"]
+          trigger: ["blur", "change"],
         },
         "userInfo.quantity": {
           type: "number",
           min: 1,
           required: true,
           message: "请输入样品数量",
-          trigger: ["blur", "change"]
+          trigger: ["blur", "change"],
         },
         "userInfo.presetTime": {
           type: "string",
           min: 1,
           required: true,
           message: "请选择结束时间",
-          trigger: ["blur", "change"]
+          trigger: ["blur", "change"],
         },
         "userInfo.serviceCategory": {
           type: "string",
           min: 1,
           required: true,
           message: "请选择支撑服务类型",
-          trigger: ["blur", "change"]
-        }
+          trigger: ["blur", "change"],
+        },
+        "userInfo.project.name": {
+          type: "string",
+          min: 1,
+          required: true,
+          message: "请选择项目名称",
+          trigger: ["blur", "change"],
+        },
       },
 
       //   iconType:  ["success", "success_no_circle", "info", "warn", "waiting", "cancel", "download", "search", "clear"]
-    }
+    };
   },
   onLoad: function (o) {
-    debugger
     if (o.storage == 1) {
-      this.clients = uni.getStorageSync("clients")
-      this.model1.userInfo = uni.getStorageSync("userInfo")
+      this.clients = uni.getStorageSync("clients");
+      this.model1.userInfo = uni.getStorageSync("userInfo");
     } else if (JSON.stringify(o) != "{}") {
-      this.clients = uni.getStorageSync("clients")
-      this.model1.userInfo = o
+      this.clients = uni.getStorageSync("clients");
+      this.model1.userInfo = o;
     }
 
     if (o.i != undefined || o.i != null) {
-      let userInfo = uni.getStorageSync("userInfo")
-      this.clients = uni.getStorageSync("clients")
-      this.clients[o.i] = JSON.parse(JSON.stringify(userInfo.project1))
+      let userInfo = uni.getStorageSync("userInfo");
+      this.clients = uni.getStorageSync("clients");
+      this.clients[o.i] = JSON.parse(JSON.stringify(userInfo.project1));
+      this.clients2 = uni.getStorageSync("clients2");
+      
+    }
+    if (o.j != undefined || o.j != null) {
+      let userInfo = uni.getStorageSync("userInfo");
+      this.clients = uni.getStorageSync("clients");
+      this.clients2 = uni.getStorageSync("clients2");
+      this.clients2[o.j] = JSON.parse(JSON.stringify(userInfo.project));
     }
   },
-  mounted() { },
-  methods: {
-    openurl(i) {
-      if (this.model1.userInfo.type != "为外部提供支撑服务") {
-        uni.setStorageSync("userInfo", this.model1.userInfo)
+  mounted() {
+    console.log(this.$store.state.vuex_user,999)
+    // let {currentUser}=this.$store.state.vuex_user
+    // if(this.clients.length==0){
+    //   this.clients.push({userName:currentUser.name,phone:currentUser.phoneNumber})
+    // }
+  },
 
+  methods: {
+    addpush2(){
+      this.clients2.push({});
+    },
+    showstypes(){
+      this.showstype=false
+      if(this.model1.userInfo.serviceCategory != "为外部提供支撑服务"){
+        let clients=[]
+    for(let i =0;i<this.clients.length;i++){
+     if(this.clients[i].jobNumber){
+      clients.push(this.clients[i])
+     }
+    }
+   
+    this.clients=clients.length>0?clients:[{}]
+   }else{
+   let clients=[]
+    for(let i =0;i<this.clients.length;i++){
+     if(!this.clients[i].jobNumber){
+      clients.push(this.clients[i])
+     }
+    }
+    this.clients=clients.length>0?clients:[{}]
+   }
+    },
+    openurl(i) {
+  if (this.model1.userInfo.serviceCategory != "为外部提供支撑服务") {
+        uni.setStorageSync("userInfo", this.model1.userInfo);
         uni.navigateTo({
-          url: `/pages/tabBar/shepun/newopen/project1?storage=1&i=${i}`
-        })
+          url: `/pages/tabBar/shepun/newopen/project1?storage=1&i=${i}`,
+        });
       }
     },
     splies(i) {
-      this.clients.splice(i, 1)
+      this.clients.splice(i, 1);
+    },
+    splies2(i) {
+      this.clients2.splice(i, 1);
     },
     addpush() {
-      this.clients.push({})
+      this.clients.push({});
     },
     sample1(e) {
-      this.model1.userInfo.serviceCategory = e.name
+      this.model1.userInfo.serviceCategory = e.name;
     },
     sample(e) {
-      this.model1.userInfo.sampleName = e.name
+
+      if(e.name=='自定义'){
+        this.model1.userInfo.sampleName = null
+        this.fstates1=true
+        this.$nextTick(()=>{
+          this.fstates=true
+        })
+      }else{
+        this.model1.userInfo.sampleName = e.name;
+        this.fstates1=false
+        this.$nextTick(()=>{
+          this.fstates=false
+        })
+      }
     },
     changeParam(param) {
-      return JSON.stringify(param).replace(/:/g, "=").replace(/,/g, "&").replace(/{/g, "?").replace(/}/g, "").replace(/"/g, "")
-    },
-    project() {
-      uni.setStorageSync("userInfo", this.model1.userInfo)
-      uni.setStorageSync("clients", this.clients)
+      return JSON.stringify(param)
+        .replace(/:/g, "=")
+        .replace(/,/g, "&")
+        .replace(/{/g, "?")
+        .replace(/}/g, "")
+        .replace(/"/g, "");
+    },  
+    project(i) {
+      uni.setStorageSync("userInfo", this.model1.userInfo);
+      uni.setStorageSync("clients2", this.clients2);
+      uni.setStorageSync("clients", this.clients);
       uni.navigateTo({
-        url: `/pages/tabBar/shepun/newopen/project?storage=1`
-      })
+        url: `/pages/tabBar/shepun/newopen/project?storage=1&j=${i}`,
+      });
     },
     opentime() {
-      uni.setStorageSync("userInfo", this.model1.userInfo)
-      uni.setStorageSync("clients", this.clients)
+      uni.setStorageSync("userInfo", this.model1.userInfo);
+      uni.setStorageSync("clients", this.clients);
       uni.navigateTo({
-        url: `/pages/tabBar/shepun/time?storage=1`
-      })
+        url: `/pages/tabBar/shepun/time?storage=1`,
+      });
     },
     ok() {
       this.$refs.form1
         .validate()
-        .then(res => {
-          debugger
-          let list = JSON.parse(JSON.stringify(uni.getStorageSync('list')))
-          list.push({
-            "registerNo": "1",
-            "registerName": "1",
-          })
-          for (let i = 0; i < list.length; i++) {
-            list[i] = { ...list[i], ...this.model1.userInfo.project1, ...this.model1.userInfo.project, ...this.model1.userInfo }
-            list[i].url = 't'
-            list[i].brand = 'b'
-            delete list[i].project1
-            delete list[i].project
-            if (list[i].sampleName == '测试') {
-              list[i].sampleName = 0
+        .then((res) => {
+          let i=0
+          this.clients.forEach(e => {
+            if(e.userName){
+              e.userName1=false
+            }else {
+              e.userName1=true
+              i=1
             }
-            if (list[i].sampleName == '加工') {
-              list[i].sampleName = 1
+            if(e.department){
+              e.department1=false
+            }else {
+              e.department1=true
+              i=1
             }
-            if (list[i].sampleName == '计算') {
-              list[i].sampleName = 2
+            if(e.phone){
+              e.phone1=false
+            }else {
+              e.phone1=true
+              i=1
             }
-            if (list[i].sampleName == '分析') {
-              list[i].sampleName = 3
-            }
-            if (list[i].serviceCategory == '支撑本研究中心科研项目') {
-              list[i].serviceCategory = 0
-            }
-            if (list[i].serviceCategory == '支撑其他科研中心科研项目') {
-              list[i].serviceCategory = 1
-            }
-            if (list[i].serviceCategory == '为外部提供支撑服务') {
-              list[i].serviceCategory = 2
-            }
-            list[i].presetTime = list[i].presetTime + ':00'
+          });
+          if( i==1){
+            this.clients=JSON.parse(JSON.stringify(this.clients))
+            return
           }
+          let list = JSON.parse(JSON.stringify(uni.getStorageSync("list")));
+          let project = {
+            DutyUser: this.model1.userInfo.project.chargE_NAME,
+            ItemCode: this.model1.userInfo.project.code,
+            ItemName: this.model1.userInfo.project.name,
+          };
+          for (let i = 0; i < list.length; i++) {
+            list[i] = {
+              ...list[i],
+              ...this.model1.userInfo.project1,
+              ...project,
+              ...this.model1.userInfo,
+            };
+            list[i].url = "t";
+            list[i].brand = "b";
+            delete list[i].project1;
+            delete list[i].project;
+            if (list[i].sampleName == "测试") {
+              list[i].sampleName = 0;
+            }
+            if (list[i].sampleName == "加工") {
+              list[i].sampleName = 1;
+            }
+            if (list[i].sampleName == "计算") {
+              list[i].sampleName = 2;
+            }
+            if (list[i].sampleName == "分析") {
+              list[i].sampleName = 3;
+            }
+            if (list[i].serviceCategory == "支撑本研究中心科研项目") {
+              list[i].serviceCategory = 0;
+            }
+            if (list[i].serviceCategory == "支撑其他科研中心科研项目") {
+              list[i].serviceCategory = 1;
+            }
+            if (list[i].serviceCategory == "为外部提供支撑服务") {
+              list[i].serviceCategory = 2;
+            }
+            list[i].presetTime = list[i].presetTime + ":00";
+          }
+          let clients = this.clients.map((e) => {
+            return {
+              userName: e.userName,
+              company: e.jobNumber,
+              phone: e.phone,
+            };
+          });
           let data = {
             registerDto: list,
-            detailList: [{
-              "userName": "string",
-              "company": "string",
-              "phone": "string"
-            }]
-          }
-          this.$res.post('/sb/api/Facility/Register/CreateRegister', data, { "content-type": "application/json" }).then(r => {
-            this.$refs.uToast.show({
-              type: 'success',
-              message: '操作成功',
-
-              complete() {
-                this.appclose()
-              }
+            detailList: clients,
+          };
+          this.$res
+            .post(this.https+"/api/Facility/Register/CreateRegister", data, {
+              "content-type": "application/json",
             })
-
-          })
-
+            .then((r) => {
+              uni.navigateTo({
+				url: `/pages/tabBar/xiaoxi/success`,
+			})
+            });
         })
-        .catch(errors => { })
-    }
-  }
-}
+        .catch((errors) => {});
+    },
+  },
+};
 </script>
 <style lang="scss" scoped>
-.yangshixiugai{
+  .urtt{
+    uni-label{
+      color: #303133;
+    font-size: 14px;
+    width: 225rpx !important;
+    }
+  }
+.yangshixiugai {
   padding-left: 16rpx !important;
 }
 ::v-deep .u-line {
   border: 0px !important;
   border-bottom: 0.1px solid #eaeaea !important;
 }
-
+.urtt{
+  padding: 0px 16rpx;
+    height: 80rpx;
+    line-height: 80rpx;
+  }
+  .addwt1{
+    &::before{
+    content: '*';
+    color: red;
+  }
+  }
 .addwt {
+
   display: flex;
   margin-top: 20rpx;
-
+  color: #303133;
+    font-size: 15px;
+    ::v-deep .uni-label-pointer{
+      color: #303133;
+    font-size: 15px;
+    }
   span {
-    font-size: 14px;
+    font-size: 15px;
   }
 }
 
@@ -309,16 +668,18 @@ export default {
 }
 
 ::v-deep .u-form-item__body__left__content__label {
-  color: #8f9ca2;
+  color: #303133;
 }
 
 .button1 {
   position: fixed;
-  bottom: 80rpx;
+  bottom: 0px;
   left: 60rpx;
   right: 0;
   width: calc(100% - 120rpx);
   background: #fff;
+  background: #fff;
+    padding-bottom: 50rpx;
 }
 
 .primarys {

@@ -107,6 +107,12 @@
       }
     },
     {
+      "path": "pages/tabBar/my/index2",
+      "style": {
+        "navigationStyle": "custom"
+      }
+    },
+    {
       "path": "pages/content/venue",
       "style": {
         "navigationStyle": "custom"

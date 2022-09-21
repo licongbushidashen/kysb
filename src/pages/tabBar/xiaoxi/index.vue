@@ -2,9 +2,9 @@
   <view class="scrolls">
     <view class="item">
       <view class="item1">
-        <text>设备被强制下机</text>
+        <text>设备被占用提醒</text>
       </view>
-      <text class="text0">您当前正在使用的设备被强制下机，若您需要继续使用该设备，建议您联系该用户协调解决</text>
+      <text class="text0">您当前正在使用的设备被占用，若您需要继续使用该设备，建议您联系该用户协调解决</text>
     </view>
     <u-list>
       <u-list-item v-for="(item, index) in list" :key="index">
@@ -15,29 +15,29 @@
           <view class="tips">
             <div>
               <!-- <text>{{ item.name }}</text> -->
-              <text>{{ item.registerName }}</text>
+              <text>{{ item.name }}</text>
             </div>
             <div style="margin: 10rpx 0px">
               <label for="">本次使用时长:</label>
               <text>{{ item.minutes }}</text>
             </div>
-            <div>
+            <div style="margin: 10rpx 0px">
               <label for="">支持科研项目:</label>
               <text>{{ item.itemName }}</text>
             </div>
-            <div>
+            <div style="margin: 10rpx 0px">
               <label for="">本年度累计使用时长:</label>
               <text>{{ item.totalMinutes }}</text>
             </div>
-            <div>
+            <div style="margin: 10rpx 0px">
               <label for="">占总机时:</label>
               <text>{{ item.selfTotalMinutes }}</text>
             </div>
-            <div>
+            <div style="margin: 10rpx 0px">
               <label for="">当前占用人:</label>
               <text>{{ item.newUser }}</text>
             </div>
-            <div>
+            <div style="margin: 10rpx 0px">
               <label for="">预估结束时间:</label>
               <text>{{ item.endTime }}</text>
             </div>
@@ -58,8 +58,6 @@ export default {
   data() {
     return {
       list: [
-        { name: "火花", brand: "中国造", type: "001", size: "80*90", img: hys, active: false },
-        { name: "火花", brand: "中国造", type: "001", size: "80*90", img: hys, active: false }
       ]
     }
   },
@@ -80,20 +78,22 @@ export default {
         client_secret: "1q2w3e*"
       }
       this.$res
-        .post('/sbauth/connect/token', params, {
+        .post(this.rzss+'/connect/token', params, {
           "content-type": "application/x-www-form-urlencoded;charset=UTF-8"
         })
         .then(res => {
           if (!res.error) {
             this.$u.vuex("vuex_token", res.data.access_token)
-            this.$res.get(`/sb/api/abp/application-configuration`).then(info => {
+            this.$res.get(`${this.https}/api/abp/application-configuration`).then(info => {
               if (!res.error) {
                 this.$u.vuex("vuex_user", info.data)
                 localStorage.setItem("vuex_userId", info.data.currentUser.id)
-                let arr = query.q.split(',')
-                arr.forEach(e => {
-                  e = e + ''
-                });
+                let arr=[]
+                // let arr = query.id.split(',')
+                // arr.forEach(e => {
+                //   e = e + ''
+                // });
+                arr.push('3a066812-987c-3e96-b28f-7996b23d94f1')
                 this.dto(arr)
               } else {
                 this.title = "对不起"
@@ -116,9 +116,8 @@ export default {
   },
   methods: {
     dto(arr) {
-
-      this.$res.post('/sb/api/Facility/Register/GetOfflineRemind', arr, { "content-type": "application/json" }).then(r => {
-        this.list = r
+      this.$res.post(this.https+'/api/Facility/Register/GetOfflineRemind', arr, { "content-type": "application/json" }).then(r => {
+        this.list = r.data
       })
     },
     actives(index) {
@@ -127,12 +126,7 @@ export default {
     },
     sexSelect(e) { },
     ok() {
-      this.$refs.form1
-        .validate()
-        .then(res => {
-          this.appclose()
-        })
-        .catch(errors => { })
+ this.appclose()
     }
   }
 }
@@ -145,8 +139,8 @@ export default {
 
 .list.active::before {
   content: "";
-  width: 12px;
-  height: 12px;
+  width: 22px;
+  height: 22px;
   position: absolute;
   right: 0px;
   bottom: 0px;
@@ -156,14 +150,15 @@ export default {
 
 .list.active::after {
   content: "";
-  width: 12px;
-  height: 12px;
+  width: 22px;
+  height: 20px;
   position: absolute;
-  right: -1px;
+  right: -3px;
   bottom: -2px;
   background-image: url(../../../static/img/dui.png);
   background-size: 100% 100%;
 }
+
 
 .list {
   display: flex;
@@ -174,7 +169,7 @@ export default {
   .tips {
     margin-left: 20rpx;
     color: #8f9ca2;
-    font-size: 14px;
+    font-size: 12px;
 
     label {
       margin-right: 20rpx;

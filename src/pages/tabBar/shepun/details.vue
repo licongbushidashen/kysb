@@ -19,6 +19,18 @@
         <label for="">规格</label>
         <text>{{list.size}}</text>
       </view>
+      <view>
+        <label for="">领用人</label>
+        <text>{{list.recipient}}</text>
+      </view>
+      <view>
+        <label for="">工号</label>
+        <text>{{list.recipientJobNumber}}</text>
+      </view>
+      <view>
+        <label for="">联系方式</label>
+        <text>{{list.recipientPhone }}</text>
+      </view>
     </div>
     <view class="button1">
       <u-button type="primary" text="下一步" class="primarys" @click="ok"></u-button>
@@ -26,6 +38,12 @@
   </view>
 </template>
 <script>
+  import i1 from "../../../static/icon/1.jpg"
+import i2 from "../../../static/icon/2.jpeg"
+import i3 from "../../../static/icon/3.jpeg"
+import i4 from "../../../static/icon/4.jpg"
+import i5 from "../../../static/icon/5.jpeg"
+import i6 from "../../../static/icon/6.jpeg"
 export default {
   components: {},
   data() {
@@ -37,11 +55,24 @@ export default {
   onLoad() { },
   mounted() {
     const arr = uni.getStorageSync('sb');
-    debugger
-    this.$res.post('/sb/api/Facility/Register/GetRegisterInfos', arr, { "content-type": "application/json" }).then(r => {
+    this.$res.post(this.https+'/api/Facility/Register/GetRegisterInfos', arr, { "content-type": "application/json" }).then(r => {
       uni.setStorageSync('list', r.data);
+      console.log(r.data)
       this.list = r.data[0] ? r.data[0] : {}
-      this.list1 = r.data[0] ? r.data[0].url[r.data[0].url] : []
+      if(r.data[0].registerNo=='1001'){
+        this.list1=[i1]
+      }else if(r.data[0].registerNo=='1002'){
+        this.list1=[i2]
+      }else if(r.data[0].registerNo=='1003'){
+        this.list1=[i3]
+      }else if(r.data[0].registerNo=='2001'){
+        this.list1=[i4]
+      }else if(r.data[0].registerNo=='2002'){
+        this.list1=[i5]
+      }else if(r.data[0].registerNo=='2003'){
+        this.list1=[i6]
+      }
+      // this.list1 = r.data[0] ? [r.data[0].url] : []
     })
   },
   methods: {
@@ -59,7 +90,7 @@ export default {
 .tipss {
   margin-top: 60rpx;
   padding: 0px 90rpx;
-  font-size: 14px;
+  font-size: 12px;
 
   >view {
     margin-bottom: 80rpx;

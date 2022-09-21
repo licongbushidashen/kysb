@@ -237,6 +237,7 @@ form {
 }
 
 .uni-label {
+	color: #605f5f !important;
 	width: 210rpx;
 	word-wrap: break-word;
 	word-break: break-all;
