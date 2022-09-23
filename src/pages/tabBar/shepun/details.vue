@@ -1,7 +1,9 @@
 <template>
   <view class="scrolls">
-    <u-swiper :list="list1" indicator indicatorMode="line" circular></u-swiper>
-
+    <u-album
+    singleMode
+              :urls="list1"
+            ></u-album>
     <div class="tipss">
       <view>
         <label for="">设备名称</label>
@@ -86,7 +88,27 @@ export default {
   }
 }
 </script>
+<style lang="scss" scoped>
+ ::v-deep .u-album{
+    height: 400rpx;
+  }
+  ::v-deep .u-album__row{
+    height: 100%;
+  }
+  ::v-deep .u-album__row__wrapper{
+    height: 100%;
+    width: 100%;
+    img{
+      object-fit:cover;
+    }
+  }
+  ::v-deep .u-album__row__wrapper > uni-image {
+  width: 100% !important;
+  height: 100% !important;
+}
+</style>
 <style lang="scss">
+
 .tipss {
   margin-top: 60rpx;
   padding: 0px 90rpx;

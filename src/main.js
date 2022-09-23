@@ -78,10 +78,10 @@ let R = httpApi(1)
 Vue.prototype.$res = R
 if (process.env.NODE_ENV === "production") {
   console.log(1)
-  Vue.prototype.https = "yqdj-test.zhejianglab.com"
+  Vue.prototype.https = "https://yqdj-test.zhejianglab.com"
   Vue.prototype.urlhttp = "https://hqauth.zhejianglab.com/api/logistics/files/www/"
   Vue.prototype.rzs = "https://hqauth.zhejianglab.com/.well-known/openid-configuration"
-  Vue.prototype.rzss = "yqdj-auth-test.zhejianglab.com"
+  Vue.prototype.rzss = "https://yqdj-auth-test.zhejianglab.com"
 } else {
   console.log(2)
   // Vue.prototype.https = "https://zjlab-logistics.demo.wy5u.com"

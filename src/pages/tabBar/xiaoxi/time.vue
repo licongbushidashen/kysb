@@ -14,7 +14,7 @@
         <u-icon slot="right" name="arrow-right"></u-icon>
       </u-form-item>
     </u--form>
-    <u-radio-group v-model="radiovalue1" placement="row"   @change="groupChange" style="margin-top: 20px;">
+    <u-radio-group v-model="radiovalue1" placement="column"   @change="groupChange" style="margin-top: 20px;">
       <u-radio   :customStyle="{ marginBottom: '8px',   flex: '1' }" v-for="(item, index) in radiolist1" :key="index"
         :label="item.name" :name="item.name" @change="radioChange">
       </u-radio>

@@ -20,7 +20,7 @@
               </div>
               <div style="margin: 10rpx 0px">
                 <label for="">预计结束时间:</label>
-                <text>{{ item.minutes }}min</text>
+                <text>{{ item.presetTime }}</text>
               </div>
              
             </view>

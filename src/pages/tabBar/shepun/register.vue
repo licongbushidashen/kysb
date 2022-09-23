@@ -1,7 +1,9 @@
 <template>
   <view class="scrolls">
     <u-toast ref="uToast"></u-toast>
-    <p style="    padding: 0px;    text-align: center;    margin: 22px 0px;">科研仪器设备使用登记表</p>
+    <p style="padding: 0px; text-align: center; margin: 22px 0px">
+      科研仪器设备使用登记表
+    </p>
     <u--form labelPosition="left" :model="model1" :rules="rules" ref="form1">
       <u-form-item
         label="设备状态"
@@ -29,7 +31,7 @@
         @click="showsample = true"
       >
         <u--input
-        ref="inputs"
+          ref="inputs"
           class="yangshixiugai"
           :focus="fstates"
           v-model="model1.userInfo.sampleName"
@@ -41,7 +43,7 @@
         <u-icon slot="right" name="arrow-right"></u-icon>
       </u-form-item>
       <u-form-item
-        label="样品数量"
+        label="数量"
         labelWidth="auto"
         prop="userInfo.quantity"
         borderBottom
@@ -49,7 +51,7 @@
         class="required"
       >
         <u--input
-          placeholder="请输入样品数量"
+          placeholder="请输入数量"
           border="surround"
           clearable
           v-model="model1.userInfo.quantity"
@@ -58,9 +60,26 @@
         <!-- <u-icon slot="right" name="arrow-right"></u-icon> -->
       </u-form-item>
       <u-form-item
+        label="单位"
+        labelWidth="auto"
+        prop="userInfo.unit"
+        borderBottom
+        ref="item1"
+        class="required"
+      >
+        <u--input
+          placeholder="请输入单位"
+          border="surround"
+          clearable
+          v-model="model1.userInfo.unit"
+        >
+        </u--input>
+        <!-- <u-icon slot="right" name="arrow-right"></u-icon> -->
+      </u-form-item>
+      <u-form-item
         label="预估结束时间"
         labelWidth="auto"
-        prop="userInfo.sex"
+        prop="userInfo.presetTime"
         borderBottom
         @click="opentime"
         ref="item1"
@@ -151,14 +170,14 @@
       </u-form-item> -->
     </u--form>
     <view>
-      <view v-for="(item, i) in clients2" :key="i" class="wtr" >
+      <view v-for="(item, i) in clients2" :key="i" class="wtr">
         <p class="addwt addwt1">
           项目信息
           <u-icon
             name="close-circle"
             color="#2979ff"
             size="28"
-            v-if="i!=0"
+            v-if="i != 0"
             @click="splies2(i)"
             style="margin-top: 3px; margin-left: 5px"
           ></u-icon>
@@ -172,12 +191,22 @@
             placeholder="请输入项目名称"
             border="none"
           ></u--input>
-         
         </view>
-        <div v-if="item.name1" style="    position: relative;    height: 28rpx;">
-          <p  style="    font-size: 12px;    line-height: 12px;     margin-left: auto;   color: #f56c6c;    position: absolute;    right: 0px;">请输入项目名称</p>
+        <div v-if="item.name1" style="position: relative; height: 28rpx">
+          <p
+            style="
+              font-size: 12px;
+              line-height: 12px;
+              margin-left: auto;
+              color: #f56c6c;
+              position: absolute;
+              right: 0px;
+            "
+          >
+            请输入项目名称
+          </p>
         </div>
-      
+
         <view class="urtt"
           ><label for="">项目代码</label>
           <u--input
@@ -187,8 +216,19 @@
             border="none"
           ></u--input>
         </view>
-        <div v-if="item.code1" style="    position: relative;    height: 28rpx;">
-          <p  style="font-size: 12px;    line-height: 12px;     margin-left: auto;   color: #f56c6c;    position: absolute;    right: 0px;">请输入项目代码</p>
+        <div v-if="item.code1" style="position: relative; height: 28rpx">
+          <p
+            style="
+              font-size: 12px;
+              line-height: 12px;
+              margin-left: auto;
+              color: #f56c6c;
+              position: absolute;
+              right: 0px;
+            "
+          >
+            请输入项目代码
+          </p>
         </div>
         <view class="urtt"
           ><label for="">负责人</label>
@@ -199,29 +239,42 @@
             border="none"
           ></u--input>
         </view>
-        <div v-if="item.chargE_NAME1" style="    position: relative;    height: 28rpx;">
-          <p  style="    font-size: 12px;    line-height: 12px;     margin-left: auto;   color: #f56c6c;    position: absolute;    right: 0px;">请输入负责人</p>
+        <div v-if="item.chargE_NAME1" style="position: relative; height: 28rpx">
+          <p
+            style="
+              font-size: 12px;
+              line-height: 12px;
+              margin-left: auto;
+              color: #f56c6c;
+              position: absolute;
+              right: 0px;
+            "
+          >
+            请输入负责人
+          </p>
         </div>
       </view>
-      <p class="addwt" @click="addpush2" style="    padding-left: 18rpx;">
-        <u-icon
-          name="plus-circle"
-          color="#2979ff"
-          size="28"
-          style="margin-top: 3px; margin-right: 5px"
-        ></u-icon
-        ><span>添加项目</span>
+      <p class="addwt" @click="addpush2" style="padding-left: 18rpx">
+        <view class="addclass">
+          <u-icon
+            name="plus"
+            color="#fff"
+            size="28"
+            style="display: inline-block"
+          ></u-icon
+          ><span>添加</span>
+        </view>
       </p>
     </view>
     <view v-if="model1.userInfo.serviceCategory">
-      <view v-for="(item, i) in clients" :key="i" class="wtr" >
+      <view v-for="(item, i) in clients" :key="i" class="wtr">
         <p class="addwt addwt1">
           委托人信息
           <u-icon
             name="close-circle"
             color="#2979ff"
             size="28"
-            v-if="i!=0"
+            v-if="i != 0"
             @click="splies(i)"
             style="margin-top: 3px; margin-left: 5px"
           ></u-icon>
@@ -235,24 +288,53 @@
             placeholder="请输入姓名"
             border="none"
           ></u--input>
-         
         </view>
-        <div v-if="item.userName1" style="    position: relative;    height: 28rpx;">
-          <p  style="    font-size: 12px;    line-height: 12px;     margin-left: auto;   color: #f56c6c;    position: absolute;    right: 0px;">请输入姓名</p>
+        <div v-if="item.userName1" style="position: relative; height: 28rpx">
+          <p
+            style="
+              font-size: 12px;
+              line-height: 12px;
+              margin-left: auto;
+              color: #f56c6c;
+              position: absolute;
+              right: 0px;
+            "
+          >
+            请输入姓名
+          </p>
         </div>
-      
+
         <view class="urtt"
-          ><label for="">{{model1.userInfo.serviceCategory != '为外部提供支撑服务'?'部门':'单位'}}</label>
+          ><label for="">{{
+            model1.userInfo.serviceCategory != "为外部提供支撑服务"
+              ? "部门"
+              : "单位"
+          }}</label>
           <u--input
             v-model="item.department"
             :disabled="model1.userInfo.serviceCategory != '为外部提供支撑服务'"
             disabledColor="#ffffff"
-            :placeholder="model1.userInfo.serviceCategory != '为外部提供支撑服务'?'请输入部门':'请输入单位' "
+            :placeholder="
+              model1.userInfo.serviceCategory != '为外部提供支撑服务'
+                ? '请输入部门'
+                : '请输入单位'
+            "
             border="none"
           ></u--input>
         </view>
-        <div v-if="item.department1" style="    position: relative;    height: 28rpx;">
-          <p  style="    font-size: 12px;    line-height: 12px;     margin-left: auto;   color: #f56c6c;    position: absolute;    right: 0px;">请输入部门</p>
+        <div v-if="item.department1" style="position: relative; height: 28rpx">
+          <p
+            style="
+              font-size: 12px;
+              line-height: 12px;
+              margin-left: auto;
+              color: #f56c6c;
+              position: absolute;
+              right: 0px;
+            "
+          >
+            请输入部门
+          </p>
         </div>
         <view class="urtt"
           ><label for="">电话</label>
@@ -264,18 +346,31 @@
             border="none"
           ></u--input>
         </view>
-        <div v-if="item.phone1" style="    position: relative;    height: 28rpx;">
-          <p  style="    font-size: 12px;    line-height: 12px;     margin-left: auto;   color: #f56c6c;    position: absolute;    right: 0px;">请输入电话</p>
+        <div v-if="item.phone1" style="position: relative; height: 28rpx">
+          <p
+            style="
+              font-size: 12px;
+              line-height: 12px;
+              margin-left: auto;
+              color: #f56c6c;
+              position: absolute;
+              right: 0px;
+            "
+          >
+            请输入电话
+          </p>
         </div>
       </view>
-      <p class="addwt" @click="addpush" style="    padding-left: 18rpx;">
-        <u-icon
-          name="plus-circle"
-          color="#2979ff"
-          size="28"
-          style="margin-top: 3px; margin-right: 5px"
-        ></u-icon
-        ><span>添加委托人</span>
+      <p class="addwt" @click="addpush" style="padding-left: 18rpx">
+        <view class="addclass">
+          <u-icon
+            name="plus"
+            color="#fff"
+            size="28"
+            style="display: inline-block"
+          ></u-icon
+          ><span>添加</span>
+        </view>
       </p>
     </view>
     <u-action-sheet
@@ -310,11 +405,11 @@ export default {
   data() {
     return {
       clients: [{}],
-      clients2:[{}],
+      clients2: [{}],
       showsample: false,
       showstype: false,
-      fstates:false,
-      fstates1:false,
+      fstates: false,
+      fstates1: false,
       list: [
         { name: "测试" },
         { name: "加工" },
@@ -336,6 +431,7 @@ export default {
           remarks: "",
           presetTime: "",
           project: {},
+          unit: "",
         },
       },
       rules: {
@@ -344,6 +440,13 @@ export default {
           min: 1,
           required: true,
           message: "请输入设备当前状态",
+          trigger: ["blur", "change"],
+        },
+        "userInfo.unit": {
+          type: "string",
+          min: 1,
+          required: true,
+          message: "请输入单位",
           trigger: ["blur", "change"],
         },
         "userInfo.quantity": {
@@ -380,8 +483,10 @@ export default {
     };
   },
   onLoad: function (o) {
+    debugger
     if (o.storage == 1) {
       this.clients = uni.getStorageSync("clients");
+      this.clients2 = uni.getStorageSync("clients2");
       this.model1.userInfo = uni.getStorageSync("userInfo");
     } else if (JSON.stringify(o) != "{}") {
       this.clients = uni.getStorageSync("clients");
@@ -393,7 +498,6 @@ export default {
       this.clients = uni.getStorageSync("clients");
       this.clients[o.i] = JSON.parse(JSON.stringify(userInfo.project1));
       this.clients2 = uni.getStorageSync("clients2");
-      
     }
     if (o.j != undefined || o.j != null) {
       let userInfo = uni.getStorageSync("userInfo");
@@ -401,9 +505,13 @@ export default {
       this.clients2 = uni.getStorageSync("clients2");
       this.clients2[o.j] = JSON.parse(JSON.stringify(userInfo.project));
     }
+    if(JSON.stringify(o)=='{}'){
+      this.getInfo();
+    }
   },
   mounted() {
-    console.log(this.$store.state.vuex_user,999)
+    console.log(this.$store.state.vuex_user, 999);
+  
     // let {currentUser}=this.$store.state.vuex_user
     // if(this.clients.length==0){
     //   this.clients.push({userName:currentUser.name,phone:currentUser.phoneNumber})
@@ -411,33 +519,82 @@ export default {
   },
 
   methods: {
-    addpush2(){
+    getInfo() {
+      this.$res
+        .get(this.https + "/api/Facility/Register/GetLatestRegisterInfo", "", {
+          "content-type": "application/json",
+        })
+        .then((s) => {
+          let r=s.data
+          if (r) {
+            let serviceCategory = "";
+            if (r.serviceCategory == 0) {
+              serviceCategory = "支撑本研究中心科研项目";
+            } else if (r.serviceCategory == 0) {
+              serviceCategory = "支撑其他科研中心科研项目";
+            } else if (r.serviceCategory == 0) {
+              serviceCategory = "为外部提供支撑服务";
+            }
+            this.model1 = {
+              userInfo: {
+                status: r.status,
+                sampleName: r.sampleName,
+                quantity: r.quantity,
+                serviceCategory: serviceCategory,
+                remarks: r.serviceCategory,
+                presetTime: "",
+                unit:r.unit,
+                project: {},
+              },
+            };
+            console.log(r,555)
+            this.clients = r.detailList.map((d) => {
+              return {
+                userName: d.userName,
+                jobNumber: d.company,
+                phone: d.phone,
+                department:d.department
+              };
+            });
+            this.clients2 = r.items.map((d) => {
+              return {
+                chargE_NAME: d.dutyUser,
+                name: d.itemName,
+                code: d.itemCode,
+              };
+            });
+          }
+        });
+    },
+    addpush2() {
       this.clients2.push({});
     },
-    showstypes(){
-      this.showstype=false
-      if(this.model1.userInfo.serviceCategory != "为外部提供支撑服务"){
-        let clients=[]
-    for(let i =0;i<this.clients.length;i++){
-     if(this.clients[i].jobNumber){
-      clients.push(this.clients[i])
-     }
-    }
-   
-    this.clients=clients.length>0?clients:[{}]
-   }else{
-   let clients=[]
-    for(let i =0;i<this.clients.length;i++){
-     if(!this.clients[i].jobNumber){
-      clients.push(this.clients[i])
-     }
-    }
-    this.clients=clients.length>0?clients:[{}]
-   }
+    showstypes() {
+      this.showstype = false;
+      if (this.model1.userInfo.serviceCategory != "为外部提供支撑服务") {
+        let clients = [];
+        for (let i = 0; i < this.clients.length; i++) {
+          if (this.clients[i].jobNumber) {
+            clients.push(this.clients[i]);
+          }
+        }
+
+        this.clients = clients.length > 0 ? clients : [{}];
+      } else {
+        let clients = [];
+        for (let i = 0; i < this.clients.length; i++) {
+          if (!this.clients[i].jobNumber) {
+            clients.push(this.clients[i]);
+          }
+        }
+        this.clients = clients.length > 0 ? clients : [{}];
+      }
     },
     openurl(i) {
-  if (this.model1.userInfo.serviceCategory != "为外部提供支撑服务") {
+      if (this.model1.userInfo.serviceCategory != "为外部提供支撑服务") {
         uni.setStorageSync("userInfo", this.model1.userInfo);
+        uni.setStorageSync("clients2", this.clients2);
+        uni.setStorageSync("clients", this.clients);
         uni.navigateTo({
           url: `/pages/tabBar/shepun/newopen/project1?storage=1&i=${i}`,
         });
@@ -456,19 +613,18 @@ export default {
       this.model1.userInfo.serviceCategory = e.name;
     },
     sample(e) {
-
-      if(e.name=='自定义'){
-        this.model1.userInfo.sampleName = null
-        this.fstates1=true
-        this.$nextTick(()=>{
-          this.fstates=true
-        })
-      }else{
+      if (e.name == "自定义") {
+        this.model1.userInfo.sampleName = null;
+        this.fstates1 = true;
+        this.$nextTick(() => {
+          this.fstates = true;
+        });
+      } else {
         this.model1.userInfo.sampleName = e.name;
-        this.fstates1=false
-        this.$nextTick(()=>{
-          this.fstates=false
-        })
+        this.fstates1 = false;
+        this.$nextTick(() => {
+          this.fstates = false;
+        });
       }
     },
     changeParam(param) {
@@ -478,7 +634,7 @@ export default {
         .replace(/{/g, "?")
         .replace(/}/g, "")
         .replace(/"/g, "");
-    },  
+    },
     project(i) {
       uni.setStorageSync("userInfo", this.model1.userInfo);
       uni.setStorageSync("clients2", this.clients2);
@@ -489,6 +645,7 @@ export default {
     },
     opentime() {
       uni.setStorageSync("userInfo", this.model1.userInfo);
+      uni.setStorageSync("clients2", this.clients2);
       uni.setStorageSync("clients", this.clients);
       uni.navigateTo({
         url: `/pages/tabBar/shepun/time?storage=1`,
@@ -498,30 +655,30 @@ export default {
       this.$refs.form1
         .validate()
         .then((res) => {
-          let i=0
-          this.clients.forEach(e => {
-            if(e.userName){
-              e.userName1=false
-            }else {
-              e.userName1=true
-              i=1
+          let i = 0;
+          this.clients.forEach((e) => {
+            if (e.userName) {
+              e.userName1 = false;
+            } else {
+              e.userName1 = true;
+              i = 1;
             }
-            if(e.department){
-              e.department1=false
-            }else {
-              e.department1=true
-              i=1
+            if (e.department) {
+              e.department1 = false;
+            } else {
+              e.department1 = true;
+              i = 1;
             }
-            if(e.phone){
-              e.phone1=false
-            }else {
-              e.phone1=true
-              i=1
+            if (e.phone) {
+              e.phone1 = false;
+            } else {
+              e.phone1 = true;
+              i = 1;
             }
           });
-          if( i==1){
-            this.clients=JSON.parse(JSON.stringify(this.clients))
-            return
+          if (i == 1) {
+            this.clients = JSON.parse(JSON.stringify(this.clients));
+            return;
           }
           let list = JSON.parse(JSON.stringify(uni.getStorageSync("list")));
           let project = {
@@ -568,20 +725,30 @@ export default {
               userName: e.userName,
               company: e.jobNumber,
               phone: e.phone,
+              department:e.department
+            };
+          });
+          let clients2 = this.clients2.map((e) => {
+            return {
+              dutyUser: e.chargE_NAME,
+              itemName: e.name,
+              itemCode: e.code,
             };
           });
           let data = {
             registerDto: list,
             detailList: clients,
+            items: clients2,
           };
           this.$res
-            .post(this.https+"/api/Facility/Register/CreateRegister", data, {
+            .post(this.https + "/api/Facility/Register/CreateRegister", data, {
               "content-type": "application/json",
             })
             .then((r) => {
+              uni.setStorageSync("success", list);
               uni.navigateTo({
-				url: `/pages/tabBar/xiaoxi/success`,
-			})
+                url: `/pages/tabBar/xiaoxi/success`,
+              });
             });
         })
         .catch((errors) => {});
@@ -590,41 +757,59 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-  .urtt{
-    uni-label{
-      color: #303133;
+.addclass {
+  width: 140rpx;
+  background: #3c9cff;
+  border-radius: 4px;
+  text-align: center;
+
+  span {
+    font-size: 12px !important;
+    color: #fff;
+  }
+}
+
+.urtt {
+  uni-label {
+    color: #303133;
     font-size: 14px;
     width: 225rpx !important;
-    }
   }
+}
+
 .yangshixiugai {
   padding-left: 16rpx !important;
 }
+
 ::v-deep .u-line {
   border: 0px !important;
   border-bottom: 0.1px solid #eaeaea !important;
 }
-.urtt{
+
+.urtt {
   padding: 0px 16rpx;
-    height: 80rpx;
-    line-height: 80rpx;
-  }
-  .addwt1{
-    &::before{
-    content: '*';
+  height: 80rpx;
+  line-height: 80rpx;
+}
+
+.addwt1 {
+  &::before {
+    content: "*";
     color: red;
   }
-  }
-.addwt {
+}
 
+.addwt {
   display: flex;
   margin-top: 20rpx;
   color: #303133;
+  font-size: 15px;
+
+  ::v-deep .uni-label-pointer {
+    color: #303133;
     font-size: 15px;
-    ::v-deep .uni-label-pointer{
-      color: #303133;
-    font-size: 15px;
-    }
+  }
+
   span {
     font-size: 15px;
   }
@@ -679,7 +864,7 @@ export default {
   width: calc(100% - 120rpx);
   background: #fff;
   background: #fff;
-    padding-bottom: 50rpx;
+  padding-bottom: 50rpx;
 }
 
 .primarys {

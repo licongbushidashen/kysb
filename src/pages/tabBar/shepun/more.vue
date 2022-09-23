@@ -8,9 +8,17 @@
     </view>
     <u-list>
       <u-list-item v-for="(item, index) in list" :key="index">
-        <view class="list" :class="item.active ? 'active' : '111'" @click="actives(index)">
+        <view
+          class="list"
+          :class="item.active ? 'active' : '111'"
+          @click="actives(index)"
+        >
           <view>
-            <image :src="item.url" mode="" style="width: 64px; height: 65px"></image>
+            <u-album
+              :urls="[item.url]"
+              style="width: 64px; height: 65px"
+            ></u-album>
+            <!-- <image :src="" mode="" style="width: 64px; height: 65px"></image> -->
           </view>
           <view class="tips">
             <div>
@@ -30,90 +38,102 @@
       </u-list-item>
     </u-list>
     <view class="button1">
-      <u-button type="primary" text="确认" class="primarys" @click="ok" :disabled="flag"></u-button>
+      <u-button
+        type="primary"
+        text="确认"
+        class="primarys"
+        @click="ok"
+        :disabled="flag"
+      ></u-button>
       <u-button text="取消"></u-button>
     </view>
   </view>
 </template>
 <script>
-        import i1 from "../../../static/icon/1.jpg"
-import i2 from "../../../static/icon/2.jpeg"
-import i3 from "../../../static/icon/3.jpeg"
-import i4 from "../../../static/icon/4.jpg"
-import i5 from "../../../static/icon/5.jpeg"
-import i6 from "../../../static/icon/6.jpeg"
-import hys from "../../../static/img/hys.png"
-document.getElementsByTagName("title")[0].innerText = ""
+import i1 from "../../../static/icon/1.jpg";
+import i2 from "../../../static/icon/2.jpeg";
+import i3 from "../../../static/icon/3.jpeg";
+import i4 from "../../../static/icon/4.jpg";
+import i5 from "../../../static/icon/5.jpeg";
+import i6 from "../../../static/icon/6.jpeg";
+import hys from "../../../static/img/hys.png";
+document.getElementsByTagName("title")[0].innerText = "";
 export default {
   components: {},
   data() {
     return {
-      list: [
-        
-      ],
-      flag:false
-    }
+      list: [],
+      flag: false,
+    };
   },
   onLoad() {},
   mounted() {
-    this.dto()
+    this.dto();
   },
   methods: {
     dto() {
-      let arr = uni.getStorageSync('sb')
-      this.$res.post(this.https+'/api/Facility/Register/GetRegisterInfos', arr, { "content-type": "application/json" }).then(r => {
-        r.data.forEach(e => {
-          if(e.registerNo=='1001'){
-        e.url=i1
-      }else if(e.registerNo=='1002'){
-        e.url=i2
-      }else if(e.registerNo=='1003'){
-        e.url=i3
-      }else if(e.registerNo=='2001'){
-        e.url=i4
-      }else if(e.registerNo=='2002'){
-        e.url=i5
-      }else if(e.registerNo=='2003'){
-        e.url=i6
-      }
-          e.active=true
+      let arr = uni.getStorageSync("sb");
+      this.$res
+        .post(this.https + "/api/Facility/Register/GetRegisterInfos", arr, {
+          "content-type": "application/json",
+        })
+        .then((r) => {
+          r.data.forEach((e) => {
+            if (e.registerNo == "1001") {
+              e.url = i1;
+            } else if (e.registerNo == "1002") {
+              e.url = i2;
+            } else if (e.registerNo == "1003") {
+              e.url = i3;
+            } else if (e.registerNo == "2001") {
+              e.url = i4;
+            } else if (e.registerNo == "2002") {
+              e.url = i5;
+            } else if (e.registerNo == "2003") {
+              e.url = i6;
+            }
+            e.active = true;
+          });
+          this.list = r.data;
         });
-        this.list = r.data
-      })
     },
     actives(index) {
-      this.flag=true
-      this.list[index].active = !this.list[index].active
-      this.list.forEach(e=>{
-        
-        if(e.active){
-          this.flag=false
+      this.flag = true;
+      this.list[index].active = !this.list[index].active;
+      this.list.forEach((e) => {
+        if (e.active) {
+          this.flag = false;
         }
-      })
+      });
     },
     sexSelect(e) {},
     ok() {
-      let list =[]
-      for(let i =0; i<this.list.length;i++){
-        if(this.list[i].active){
-          list.push(this.list[i])
+      let list = [];
+      for (let i = 0; i < this.list.length; i++) {
+        if (this.list[i].active) {
+          list.push(this.list[i]);
         }
       }
-      uni.setStorageSync('list',list);
-          uni.navigateTo({
-            url: `/pages/tabBar/shepun/register`
-          })
-        .catch(errors => {})
-    }
-  }
-}
+      uni.setStorageSync("list", list);
+      uni
+        .navigateTo({
+          url: `/pages/tabBar/shepun/register`,
+        })
+        .catch((errors) => {});
+    },
+  },
+};
 </script>
 <style lang="scss" scoped>
-  .list.active{
-    border: 1px solid #3c9cff;
-    position:relative;
-  }
-  .list.active::before {
+::v-deep .u-album__row__wrapper > uni-image {
+  width: 64px !important;
+  height: 65px !important;
+}
+.list.active {
+  border: 1px solid #3c9cff;
+  position: relative;
+}
+.list.active::before {
   content: "";
   width: 22px;
   height: 22px;
@@ -121,7 +141,13 @@ export default {
   right: 0px;
   bottom: 0px;
   background: #3c9cff;
-  background: linear-gradient(135deg, transparent, transparent 50%, #3c9cff 50%, #3c9cff 100%);
+  background: linear-gradient(
+    135deg,
+    transparent,
+    transparent 50%,
+    #3c9cff 50%,
+    #3c9cff 100%
+  );
 }
 
 .list.active::after {
@@ -185,7 +211,6 @@ export default {
   padding-top: 100rpx;
 }
 .scrolls {
-
   padding: 0px 60rpx;
 }
 </style>
