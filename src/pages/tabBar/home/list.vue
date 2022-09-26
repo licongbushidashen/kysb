@@ -3,6 +3,9 @@
     <!-- <u-navbar title="公告通知" @rightClick="rightClick" @leftClick="leftClick">
     </u-navbar> -->
     <u-loading-icon text="加载中"></u-loading-icon>
+    <p>{{objs.accessToken}}</p>
+    <p>{{objs.url}}</p>
+    <p>{{objs.url2}}</p>
   </view>
 </template>
 <script>
@@ -16,12 +19,16 @@ export default {
       current: 0,
       indexList: [],
       keyword: '',
-      Category: ''
+      Category: '',
+      objs:{accessToken:'',url:'',url2:''}
     }
   },
 
   mounted() {
     var query = this.$route.query
+this.objs.accessToken =query.accessToken
+this.objs.url =this.rzss
+this.objs.url2=this.https
     if (query.accessToken) {
       this.$u.vuex("query_token", query.accessToken)
     }

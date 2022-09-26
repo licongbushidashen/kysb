@@ -1,9 +1,6 @@
 <template>
   <view class="scrolls">
     <u-toast ref="uToast"></u-toast>
-    <p style="padding: 0px; text-align: center; margin: 22px 0px">
-      科研仪器设备使用登记表
-    </p>
     <u--form labelPosition="left" :model="model1" :rules="rules" ref="form1">
       <u-form-item
         label="设备状态"
@@ -28,7 +25,7 @@
         borderBottom
         ref="item1"
         class="required"
-        @click="showsample = true"
+        @click="showsample = true;fstates1=false"
       >
         <u--input
           ref="inputs"
@@ -184,13 +181,14 @@
         </p>
         <view @click="project(i)" class="urtt">
           <label for="">项目名称</label>
-          <u--input
+          <u--textarea
+          autoHeight 
             v-model="item.name"
             disabledColor="#ffffff"
             disabled
             placeholder="请输入项目名称"
             border="none"
-          ></u--input>
+          ></u--textarea>
         </view>
         <div v-if="item.name1" style="position: relative; height: 28rpx">
           <p
@@ -258,8 +256,8 @@
         <view class="addclass">
           <u-icon
             name="plus"
-            color="#fff"
-            size="28"
+            color="#303133"
+            size="24"
             style="display: inline-block"
           ></u-icon
           ><span>添加</span>
@@ -365,8 +363,8 @@
         <view class="addclass">
           <u-icon
             name="plus"
-            color="#fff"
-            size="28"
+            color="#303133"
+            size="24"
             style="display: inline-block"
           ></u-icon
           ><span>添加</span>
@@ -399,7 +397,7 @@
   </view>
 </template>
 <script>
-document.getElementsByTagName("title")[0].innerText = "";
+document.getElementsByTagName("title")[0].innerText = "科研仪器设备使用登记表";
 export default {
   components: {},
   data() {
@@ -530,9 +528,9 @@ export default {
             let serviceCategory = "";
             if (r.serviceCategory == 0) {
               serviceCategory = "支撑本研究中心科研项目";
-            } else if (r.serviceCategory == 0) {
+            } else if (r.serviceCategory == 1) {
               serviceCategory = "支撑其他科研中心科研项目";
-            } else if (r.serviceCategory == 0) {
+            } else if (r.serviceCategory == 2) {
               serviceCategory = "为外部提供支撑服务";
             }
             this.model1 = {
@@ -548,6 +546,7 @@ export default {
               },
             };
             console.log(r,555)
+            
             this.clients = r.detailList.map((d) => {
               return {
                 userName: d.userName,
@@ -697,18 +696,18 @@ export default {
             list[i].brand = "b";
             delete list[i].project1;
             delete list[i].project;
-            if (list[i].sampleName == "测试") {
-              list[i].sampleName = 0;
-            }
-            if (list[i].sampleName == "加工") {
-              list[i].sampleName = 1;
-            }
-            if (list[i].sampleName == "计算") {
-              list[i].sampleName = 2;
-            }
-            if (list[i].sampleName == "分析") {
-              list[i].sampleName = 3;
-            }
+            // if (list[i].sampleName == "测试") {
+            //   list[i].sampleName = 0;
+            // }
+            // if (list[i].sampleName == "加工") {
+            //   list[i].sampleName = 1;
+            // }
+            // if (list[i].sampleName == "计算") {
+            //   list[i].sampleName = 2;
+            // }
+            // if (list[i].sampleName == "分析") {
+            //   list[i].sampleName = 3;
+            // }
             if (list[i].serviceCategory == "支撑本研究中心科研项目") {
               list[i].serviceCategory = 0;
             }
@@ -757,18 +756,31 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+  .wtr{
+    background: #fff;
+    margin-top: 10rpx;
+    padding-top: 10rpx;
+    padding-left: 22rpx;
+  }
 .addclass {
   width: 140rpx;
-  background: #3c9cff;
+  border: 1px solid #eaeaea;
   border-radius: 4px;
   text-align: center;
 
   span {
     font-size: 12px !important;
-    color: #fff;
+    color: #303133;
   }
 }
-
+::v-deep .uni-textarea-textarea{
+  color: #303133 !important;
+}
+::v-deep.u-textarea--disabled{
+  background: #fff !important;
+  padding-left: 0px !important;
+  color: #303133 !important;
+}
 .urtt {
   uni-label {
     color: #303133;
@@ -788,7 +800,7 @@ export default {
 
 .urtt {
   padding: 0px 16rpx;
-  height: 80rpx;
+  // height: 80rpx;
   line-height: 80rpx;
 }
 
@@ -857,14 +869,16 @@ export default {
 }
 
 .button1 {
-  position: fixed;
-  bottom: 0px;
-  left: 60rpx;
-  right: 0;
-  width: calc(100% - 120rpx);
-  background: #fff;
-  background: #fff;
-  padding-bottom: 50rpx;
+  padding: 40rpx;
+    margin-top: 44rpx;
+  // position: fixed;
+  // bottom: 0px;
+  // left: 60rpx;
+  // right: 0;
+  // width: calc(100% - 120rpx);
+  // background: #fff;
+  // background: #fff;
+  // padding-bottom: 50rpx;
 }
 
 .primarys {
@@ -899,7 +913,10 @@ export default {
 }
 
 .scrolls {
-  padding: 0px 60rpx;
-  padding-bottom: 290rpx;
+  padding: 0px 0px;
+  padding-bottom: 0px;
+}
+::v-deep.u-textarea--disabled{
+  background: #fff !important;
 }
 </style>

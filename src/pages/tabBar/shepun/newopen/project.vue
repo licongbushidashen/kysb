@@ -1,5 +1,6 @@
 <template>
   <view class="scrolls" >
+    <u-toast ref="uToast"></u-toast>
     <view class="item12">
       <u-search placeholder="请输入关键字" v-model="keyword" @change="ban" :showAction="false" class=""></u-search>
     </view>
@@ -63,6 +64,10 @@ export default {
     },
     ok() {
       if (!this.kes.name) {
+        this.$refs.uToast.show({
+						type: 'default',
+						message: '请选择项目',
+					})
         return
       }
       let userInfo = uni.getStorageSync("userInfo")
@@ -122,18 +127,19 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+  .u-search{
+    margin: 20rpx !important;
+  }
   ::v-deep .uni-scroll-view-content>uni-view{
-    padding-top: 80rpx !important;
+    padding-top:90rpx !important;
   }
 .item12{
-      z-index: 999;
-    position: fixed;
-    top: 10rpx;
-    left: 10rpx;
-    right: 10rpx;
+  position: fixed;
+    left: 0px;
+    right: 0px;
     display: flex;
-
-
+    z-index: 999999;
+    background: #fff;
 }
 .buttons {
   position: fixed;
@@ -153,7 +159,7 @@ export default {
   align-items: center;
   border-bottom: 1px solid #eee;
   padding-bottom: 10rpx;
-
+background: #fff;
   .listnue-f {
     width: 40px;
     text-align: center;
@@ -169,6 +175,8 @@ export default {
     font-size: 14px;
     padding-top: 10rpx;
 
+    padding-left: 20rpx;
+    padding-right: 20rpx;
     p {
       line-height: 50rpx;
     }

@@ -146,7 +146,7 @@
           "pathRewrite": { "^/sb": "" }
         },
         "/sbauth/": {
-          "target": "https://sb-auth.demo.wy5u.com/",
+          "target": "https://sb-auth.demo.wy5u.com",
           "changeOrigin": true,
           "pathRewrite": {
             "^/sbauth": ""

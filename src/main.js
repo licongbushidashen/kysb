@@ -116,7 +116,7 @@ jsBridge.invoke('dialPhoneCall', {
 
 }
 function appclose(){
-  jsBridge.invoke('close', {})
+  jsBridge.invokeback('close', {})
 }
 function ChangeHourMinutestr(str) {
   if (str !== "0" && str !== "" && str !== null) {

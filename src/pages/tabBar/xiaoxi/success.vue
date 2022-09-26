@@ -8,7 +8,7 @@
     </view>
     <u-list>
       <u-list-item v-for="(item, index) in list" :key="index">
-        <view class="list" :class="item.active ? 'active' : '111'" @click="actives(index)">
+        <view class="list" :class="item.active ? 'active' : '111'">
           <view>
             <image :src="item.url" mode="" style="width: 64px; height: 65px"></image>
           </view>
@@ -61,6 +61,22 @@ export default {
   methods: {
     dto() {
      this.list= uni.getStorageSync("success")
+     for(let i=0;i<this.list.length;i++){
+          if(this.list[i].registerNo=='1001'){
+            this.list[i].url=i1
+          }else if(this.list[i].registerNo=='1002'){
+            this.list[i].url=i2
+          }else if(this.list[i].registerNo=='1003'){
+            this.list[i].url=i3
+          }else if(this.list[i].registerNo=='2001'){
+            this.list[i].url=i4
+          }else if(this.list[i].registerNo=='2002'){
+            this.list[i].url=i5
+          }else if(this.list[i].registerNo=='2003'){
+            this.list[i].url=i6
+          }
+          // r.data[i].minutes=this.ChangeHourMinutestr(r.data[i].minutes)
+        }
     },
     actives(index) {
       this.flag=true
@@ -90,31 +106,31 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-  .list.active{
-    border: 1px solid #3c9cff;
-    position:relative;
-  }
-  .list.active::before {
-  content: "";
-  width: 22px;
-  height: 22px;
-  position: absolute;
-  right: 0px;
-  bottom: 0px;
-  background: #3c9cff;
-  background: linear-gradient(135deg, transparent, transparent 50%, #3c9cff 50%, #3c9cff 100%);
-}
+//   .list.active{
+//     border: 1px solid #3c9cff;
+//     position:relative;
+//   }
+//   .list.active::before {
+//   content: "";
+//   width: 22px;
+//   height: 22px;
+//   position: absolute;
+//   right: 0px;
+//   bottom: 0px;
+//   background: #3c9cff;
+//   background: linear-gradient(135deg, transparent, transparent 50%, #3c9cff 50%, #3c9cff 100%);
+// }
 
-.list.active::after {
-  content: "";
-  width: 22px;
-  height: 20px;
-  position: absolute;
-  right: -3px;
-  bottom: -2px;
-  background-image: url(../../../static/img/dui.png);
-  background-size: 100% 100%;
-}
+// .list.active::after {
+//   content: "";
+//   width: 22px;
+//   height: 20px;
+//   position: absolute;
+//   right: -3px;
+//   bottom: -2px;
+//   background-image: url(../../../static/img/dui.png);
+//   background-size: 100% 100%;
+// }
 
 .list {
   display: flex;

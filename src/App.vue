@@ -93,6 +93,19 @@ export default {
 }
 </script>
 <style lang="scss">
+  body, html{
+    background: #f7f7f7;
+  }
+  uni-page{
+    background: #f7f7f7;
+  }
+  .u-form-item{
+    background: #fff;
+    padding: 0px 20rpx;
+    .u-form-item__body{
+      min-height: 74rpx;
+    }
+  }
 /* 注意要写在第一行，同时给style标签加入lang="scss"属性 */
 @import 'uview-ui/index.scss';
 </style>

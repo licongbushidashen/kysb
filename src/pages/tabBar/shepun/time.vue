@@ -10,17 +10,18 @@
       @cancel="showSex = false" @confirm="sexSelect" :formatter="formatter"></u-datetime-picker>
 
     <view class="button1">
-      <u-button type="primary" text="确认" class="primarys" @click="ok"></u-button>
+      <u-button type="primary" text="确认" class="primarys" @click="ok" :disabled="radiovalue1==''"></u-button>
       <u-button text="取消"></u-button>
     </view>
   </view>
 </template>
 <script>
-document.getElementsByTagName("title")[0].innerText = ""
+document.getElementsByTagName("title")[0].innerText = "时间选择"
 export default {
   components: {},
   data() {
     return {
+      disabled:false,
       radiovalue1: "",
       value: "",
       showSex: false,

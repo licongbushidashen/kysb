@@ -106,31 +106,31 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-.list.active {
-  border: 1px solid #3c9cff;
-  position: relative;
-}
-.list.active::before {
-  content: "";
-  width: 22px;
-  height: 22px;
-  position: absolute;
-  right: 0px;
-  bottom: 0px;
-  background: #3c9cff;
-  background: linear-gradient(135deg, transparent, transparent 50%, #3c9cff 50%, #3c9cff 100%);
-}
+// .list.active {
+//   border: 1px solid #3c9cff;
+//   position: relative;
+// }
+// .list.active::before {
+//   content: "";
+//   width: 22px;
+//   height: 22px;
+//   position: absolute;
+//   right: 0px;
+//   bottom: 0px;
+//   background: #3c9cff;
+//   background: linear-gradient(135deg, transparent, transparent 50%, #3c9cff 50%, #3c9cff 100%);
+// }
 
-.list.active::after {
-  content: "";
-  width: 22px;
-  height: 20px;
-  position: absolute;
-  right: -3px;
-  bottom: -2px;
-  background-image: url(../../../static/img/dui.png);
-  background-size: 100% 100%;
-}
+// .list.active::after {
+//   content: "";
+//   width: 22px;
+//   height: 20px;
+//   position: absolute;
+//   right: -3px;
+//   bottom: -2px;
+//   background-image: url(../../../static/img/dui.png);
+//   background-size: 100% 100%;
+// }
 
 .list {
   display: flex;
