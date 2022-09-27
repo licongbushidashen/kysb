@@ -14,12 +14,12 @@
           </view>
           <view class="tips">
             <div>
-              <!-- <text>{{ item.name }}</text> -->
-              <text>{{ item.brand }}</text>
+              <text>{{ item.registerName }}</text>
+              <!-- <text>{{ item.brand }}</text> -->
             </div>
             <div style="margin: 10rpx 0px">
               <label for="">本次使用时长:</label>
-              <text>{{ item.minutes }}分钟</text>
+           <text>{{ item.minutes |ChangeHourMinutestr}}</text>
             </div>
             <div style="margin: 10rpx 0px">
               <label for="">支撑科研项目:</label>
@@ -43,14 +43,9 @@
   </view>
 </template>
 <script>
-      import i1 from "../../../static/icon/1.jpg"
-import i2 from "../../../static/icon/2.jpeg"
-import i3 from "../../../static/icon/3.jpeg"
-import i4 from "../../../static/icon/4.jpg"
-import i5 from "../../../static/icon/5.jpeg"
-import i6 from "../../../static/icon/6.jpeg"
-import hys from "../../../static/img/hys.png"
-document.getElementsByTagName("title")[0].innerText = ""
+        import i1 from "../../../static/icon/1.png"
+
+document.getElementsByTagName("title")[0].innerText = "设备下机提醒"
 export default {
   components: {},
   data() {
@@ -62,9 +57,11 @@ export default {
   },
   onLoad() {},
   mounted() {
+    document.getElementsByTagName("title")[0].innerText = "设备下机提醒"
     this.dto()
   },
   methods: {
+    
     actives(index) {
       this.list[index].active = !this.list[index].active
       console.log(this.list)
@@ -73,19 +70,8 @@ export default {
       let arr = uni.getStorageSync('djsb')
       this.$res.post(this.https+'/api/Facility/Register/GetOfflineRemind', arr, { "content-type": "application/json" }).then(r => {
         r.data.forEach(e => {
-          if(e.registerNo=='1001'){
         e.url=i1
-      }else if(e.registerNo=='1002'){
-        e.url=i2
-      }else if(e.registerNo=='1003'){
-        e.url=i3
-      }else if(e.registerNo=='2001'){
-        e.url=i4
-      }else if(e.registerNo=='2002'){
-        e.url=i5
-      }else if(e.registerNo=='2003'){
-        e.url=i6
-      }
+      
           e.active=true
         });
         this.list = r.data
@@ -106,6 +92,16 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+.tips{
+label{
+  color: #000 !important;
+  width: 60rpx !important;
+}
+text{
+  color: #000 !important;
+  flex:1 !important
+}
+}
 // .list.active {
 //   border: 1px solid #3c9cff;
 //   position: relative;
@@ -151,7 +147,7 @@ export default {
 }
 .button1 {
   position: fixed;
-  bottom: 160rpx;
+  bottom: 20rpx;
   left: 60rpx;
   right: 0;
   width: calc(100% - 120rpx);
@@ -175,11 +171,11 @@ export default {
   color: #8f9ca2;
 }
 .item {
-  margin-bottom: 80rpx;
+  margin-bottom: 20rpx;
 }
 .item1 {
   margin: 10rpx 0px;
-  padding-top: 100rpx;
+  padding-top: 40rpx;
 }
 .scrolls {
   padding: 0px 60rpx;

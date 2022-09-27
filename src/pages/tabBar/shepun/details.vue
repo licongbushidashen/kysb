@@ -2,7 +2,7 @@
   <view class="scrolls">
     <u-album
     singleMode
-              :urls="list1"
+    :urls="list1"
             ></u-album>
     <div class="tipss">
       <view>
@@ -21,15 +21,15 @@
         <label for="">规格</label>
         <text>{{list.size}}</text>
       </view>
-      <view>
+      <view v-if="list.recipient">
         <label for="">领用人</label>
         <text>{{list.recipient}}</text>
       </view>
-      <view>
+      <view v-if="list.recipientJobNumber">
         <label for="">工号</label>
         <text>{{list.recipientJobNumber}}</text>
       </view>
-      <view>
+      <view v-if="list.recipientPhone">
         <label for="">联系方式</label>
         <text>{{list.recipientPhone }}</text>
       </view>
@@ -40,12 +40,8 @@
   </view>
 </template>
 <script>
-  import i1 from "../../../static/icon/1.jpg"
-import i2 from "../../../static/icon/2.jpeg"
-import i3 from "../../../static/icon/3.jpeg"
-import i4 from "../../../static/icon/4.jpg"
-import i5 from "../../../static/icon/5.jpeg"
-import i6 from "../../../static/icon/6.jpeg"
+  import i1 from "../../../static/icon/1.png"
+
 export default {
   components: {},
   data() {
@@ -61,19 +57,7 @@ export default {
       uni.setStorageSync('list', r.data);
       console.log(r.data)
       this.list = r.data[0] ? r.data[0] : {}
-      if(r.data[0].registerNo=='1001'){
-        this.list1=[i1]
-      }else if(r.data[0].registerNo=='1002'){
-        this.list1=[i2]
-      }else if(r.data[0].registerNo=='1003'){
-        this.list1=[i3]
-      }else if(r.data[0].registerNo=='2001'){
-        this.list1=[i4]
-      }else if(r.data[0].registerNo=='2002'){
-        this.list1=[i5]
-      }else if(r.data[0].registerNo=='2003'){
-        this.list1=[i6]
-      }
+           this.list1=[i1]
       // this.list1 = r.data[0] ? [r.data[0].url] : []
     })
   },
@@ -89,6 +73,9 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+::v-deep .u-button--square{
+  border-radius:12px !important;
+}
  ::v-deep .u-album{
     height: 400rpx;
   }
@@ -98,6 +85,7 @@ export default {
   ::v-deep .u-album__row__wrapper{
     height: 100%;
     width: 100%;
+  
     img{
       object-fit:cover;
     }
@@ -105,6 +93,9 @@ export default {
   ::v-deep .u-album__row__wrapper > uni-image {
   width: 100% !important;
   height: 100% !important;
+    >div{
+      background-size: 100% 129%;
+    }
 }
 </style>
 <style lang="scss">
@@ -115,18 +106,24 @@ export default {
   font-size: 12px;
 
   >view {
-    margin-bottom: 80rpx;
+       padding-bottom: 30rpx;
+    border-bottom: 1px solid #efefef;
+    padding-top: 30rpx;
+    display: flex;
   }
 }
 
 label {
   margin-right: 20rpx;
-  color: #8f9ca2;
-  font-size: 14px;
+  color: #000;
+  font-size: 16px;
   width: 80px;
   display: inline-block;
 }
-
+text{
+   font-size: 16px;
+   flex:1;
+}
 ::v-deep .u-swiper__wrapper,
 ::v-deep .u-swiper__wrapper__item__wrapper__image {
   height: 250px !important;
@@ -138,7 +135,7 @@ label {
 
 .button1 {
   position: fixed;
-  bottom: 80rpx;
+  bottom: 40rpx;
   left: 60rpx;
   right: 0;
   width: calc(100% - 120rpx);

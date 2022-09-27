@@ -25,7 +25,10 @@
         borderBottom
         ref="item1"
         class="required"
-        @click="showsample = true;fstates1=false"
+        @click="
+          showsample = true;
+          fstates1 = false;
+        "
       >
         <u--input
           ref="inputs"
@@ -182,7 +185,7 @@
         <view @click="project(i)" class="urtt">
           <label for="">项目名称</label>
           <u--textarea
-          autoHeight 
+            autoHeight
             v-model="item.name"
             disabledColor="#ffffff"
             disabled
@@ -190,7 +193,7 @@
             border="none"
           ></u--textarea>
         </view>
-        <div v-if="item.name1" style="position: relative; height: 28rpx">
+        <div @click="project(i)" v-if="item.name1" style="position: relative; height: 28rpx">
           <p
             style="
               font-size: 12px;
@@ -206,8 +209,11 @@
         </div>
 
         <view class="urtt"
+           @click="project(i)"
           ><label for="">项目代码</label>
           <u--input
+       
+          :disabled="true"
             v-model="item.code"
             disabledColor="#ffffff"
             placeholder="请输入项目代码"
@@ -229,9 +235,11 @@
           </p>
         </div>
         <view class="urtt"
+         @click="project(i)"
           ><label for="">负责人</label>
           <u--input
             v-model="item.chargE_NAME"
+            :disabled="true"
             disabledColor="#ffffff"
             placeholder="请输入负责人"
             border="none"
@@ -303,6 +311,7 @@
         </div>
 
         <view class="urtt"
+        click="openurl(i)"
           ><label for="">{{
             model1.userInfo.serviceCategory != "为外部提供支撑服务"
               ? "部门"
@@ -335,6 +344,7 @@
           </p>
         </div>
         <view class="urtt"
+        click="openurl(i)"
           ><label for="">电话</label>
           <u--input
             v-model="item.phone"
@@ -385,14 +395,13 @@
       @select="sample1"
     >
     </u-action-sheet>
-    <view class="button1">
+    <view class="button1" v-show="fnd">
       <u-button
         type="primary"
         text="确认"
         class="primarys"
         @click="ok"
       ></u-button>
-      <u-button text="取消"></u-button>
     </view>
   </view>
 </template>
@@ -402,6 +411,7 @@ export default {
   components: {},
   data() {
     return {
+      fnd: true,
       clients: [{}],
       clients2: [{}],
       showsample: false,
@@ -481,7 +491,9 @@ export default {
     };
   },
   onLoad: function (o) {
-    debugger
+    document.getElementsByTagName("title")[0].innerText =
+      "科研仪器设备使用登记表";
+    debugger;
     if (o.storage == 1) {
       this.clients = uni.getStorageSync("clients");
       this.clients2 = uni.getStorageSync("clients2");
@@ -503,13 +515,33 @@ export default {
       this.clients2 = uni.getStorageSync("clients2");
       this.clients2[o.j] = JSON.parse(JSON.stringify(userInfo.project));
     }
-    if(JSON.stringify(o)=='{}'){
+    if (JSON.stringify(o) == "{}") {
       this.getInfo();
     }
   },
   mounted() {
-    console.log(this.$store.state.vuex_user, 999);
-  
+    document.getElementsByTagName("title")[0].innerText =
+      "科研仪器设备使用登记表";
+    const originalHeight =
+      document.documentElement.clientHeight || document.body.clientHeight;
+    let _this = this;
+    // window.onresize= () => {
+    //   const resizeHeight =
+    //     document.documentElement.clientHeight || document.body.clientHeight;
+    //   // 当前屏幕高度 < 原始屏幕高度，隐藏按钮
+    //   if (resizeHeight < originalHeight) {
+    //     _this.fnd = false;
+    //   } else {
+    //     _this.fnd = true;
+    //   }
+    // };
+    document.body.addEventListener("focusin", () => {
+      //软键盘弹出的事件处理
+      _this.fnd = false;
+    });
+    document.body.addEventListener("focusout", () => {
+      _this.fnd = true;
+    });
     // let {currentUser}=this.$store.state.vuex_user
     // if(this.clients.length==0){
     //   this.clients.push({userName:currentUser.name,phone:currentUser.phoneNumber})
@@ -523,7 +555,9 @@ export default {
           "content-type": "application/json",
         })
         .then((s) => {
-          let r=s.data
+          document.getElementsByTagName("title")[0].innerText =
+            "科研仪器设备使用登记表";
+          let r = s.data;
           if (r) {
             let serviceCategory = "";
             if (r.serviceCategory == 0) {
@@ -541,18 +575,16 @@ export default {
                 serviceCategory: serviceCategory,
                 remarks: r.serviceCategory,
                 presetTime: "",
-                unit:r.unit,
+                unit: r.unit,
                 project: {},
               },
             };
-            console.log(r,555)
-            
             this.clients = r.detailList.map((d) => {
               return {
                 userName: d.userName,
                 jobNumber: d.company,
                 phone: d.phone,
-                department:d.department
+                department: d.department,
               };
             });
             this.clients2 = r.items.map((d) => {
@@ -692,8 +724,7 @@ export default {
               ...project,
               ...this.model1.userInfo,
             };
-            list[i].url = "t";
-            list[i].brand = "b";
+
             delete list[i].project1;
             delete list[i].project;
             // if (list[i].sampleName == "测试") {
@@ -724,7 +755,7 @@ export default {
               userName: e.userName,
               company: e.jobNumber,
               phone: e.phone,
-              department:e.department
+              department: e.department,
             };
           });
           let clients2 = this.clients2.map((e) => {
@@ -756,12 +787,16 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-  .wtr{
-    background: #fff;
-    margin-top: 10rpx;
-    padding-top: 10rpx;
-    padding-left: 22rpx;
-  }
+::v-deep .u-form-item__body__right__message{
+  top: 20px;
+  margin-left: 232rpx !important;
+}
+.wtr {
+  background: #fff;
+  margin-top: 10rpx;
+  padding-top: 10rpx;
+  padding-left: 22rpx;
+}
 .addclass {
   width: 140rpx;
   border: 1px solid #eaeaea;
@@ -773,10 +808,10 @@ export default {
     color: #303133;
   }
 }
-::v-deep .uni-textarea-textarea{
+::v-deep .uni-textarea-textarea {
   color: #303133 !important;
 }
-::v-deep.u-textarea--disabled{
+::v-deep.u-textarea--disabled {
   background: #fff !important;
   padding-left: 0px !important;
   color: #303133 !important;
@@ -869,16 +904,13 @@ export default {
 }
 
 .button1 {
-  padding: 40rpx;
-    margin-top: 44rpx;
-  // position: fixed;
-  // bottom: 0px;
-  // left: 60rpx;
-  // right: 0;
-  // width: calc(100% - 120rpx);
-  // background: #fff;
-  // background: #fff;
-  // padding-bottom: 50rpx;
+  // padding: 40rpx;
+  //   margin-top: 44rpx;
+  position: fixed;
+  bottom: 0px;
+  left: 60rpx;
+  right: 0;
+  width: calc(100% - 120rpx);
 }
 
 .primarys {
@@ -914,9 +946,9 @@ export default {
 
 .scrolls {
   padding: 0px 0px;
-  padding-bottom: 0px;
+  padding-bottom: 120rpx;
 }
-::v-deep.u-textarea--disabled{
+::v-deep.u-textarea--disabled {
   background: #fff !important;
 }
 </style>

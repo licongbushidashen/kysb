@@ -9,7 +9,7 @@
     <u--form labelPosition="left" :model="model1" :rules="rules" ref="form1">
       <u-form-item label="设备状态" labelWidth="auto" :labelStyle="labelStyle" prop="userInfo.sex" borderBottom
         @click="showSex = true" ref="item1">
-        <u--input v-model="model1.userInfo.sex" disabled disabledColor="#ffffff" placeholder="请选择状态" border="none" >
+        <u--input v-model="model1.userInfo.sex" disabled  placeholder="请选择状态" border="none" >
         </u--input>
         <u-icon slot="right" name="arrow-right"></u-icon>
       </u-form-item>
@@ -22,18 +22,18 @@
 
     <u-action-sheet :show="showSex" :actions="actions" title="请选择状态" @close="showSex = false" @select="sexSelect">
     </u-action-sheet>
-    <view class="button1">
+    <view class="button1" v-show="fnd">
       <u-button type="primary" text="确认" class="primarys" @click="ok"></u-button>
-      <u-button text="取消"></u-button>
     </view>
   </view>
 </template>
 <script>
-document.getElementsByTagName("title")[0].innerText = ""
+document.getElementsByTagName("title")[0].innerText = "设备当前状态"
 export default {
   components: {},
   data() {
     return {
+       fnd: true,
       labelStyle: {
         color: '#8f9ca2',
         marginRight:'20rpx'
@@ -66,8 +66,19 @@ export default {
     }
   },
   onLoad() { },
-  mounted() { },
+  mounted() { 
+    let _this=this
+    document.getElementsByTagName("title")[0].innerText = "设备当前状态"
+     document.body.addEventListener("focusin", () => {
+      //软键盘弹出的事件处理
+      _this.fnd = false;
+    });
+    document.body.addEventListener("focusout", () => {
+      _this.fnd = true;
+    });
+  },
   methods: {
+    
     sexSelect(e) {
       this.model1.userInfo.sex = e.name
       this.model1.userInfo.remarks = ''
@@ -107,19 +118,28 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+::v-deep .uni-input-input{
+  background: #fff0 !important;
+}
+::v-deep .u-form-item{
+background: none !important;
+padding: 0px !important;
+}
   ::v-deep .u-textarea{
-    padding:9px 0px !important
+    padding:9px 0px !important;
+    background:none !important
   }
   ::v-deep .u-form-item__body__left{
     margin-right: 20rpx !important;
   }
 ::v-deep .u-form-item__body__left__content__label {
-  color: #8f9ca2
+  width: 100px !important;
+  color: #000 !important;
 }
 
 .button1 {
-  position: fixed;
-  bottom: 160rpx;
+   position: fixed;
+  bottom: 20rpx;
   left: 60rpx;
   right: 0;
   width: calc(100% - 120rpx);
@@ -153,11 +173,11 @@ export default {
 
 .item1 {
   margin: 10rpx 0px;
-  padding-top: 100rpx
+  padding-top: 40rpx
 }
 
 .scrolls {
-  margin-top: 140rpx;
+  margin-top: 40rpx;
   padding: 0px 60rpx;
 }
 </style>

@@ -2,7 +2,7 @@
   <view class="scrolls" >
     <u-toast ref="uToast"></u-toast>
     <view class="item12">
-      <u-search placeholder="请输入关键字" v-model="keyword" @change="ban" :showAction="false"></u-search>
+      <u-search placeholder="请输入姓名/工号/部门" v-model="keyword" @change="ban" :showAction="false"></u-search>
     </view>
 
     <u-list @scrolltolower="scrolltolower">
@@ -34,7 +34,7 @@
   </view>
 </template>
 <script>
-document.getElementsByTagName("title")[0].innerText = ""
+document.getElementsByTagName("title")[0].innerText = "委托人信息"
 import lodash from "lodash" //引入lodash
 export default {
   components: {},
@@ -56,6 +56,7 @@ export default {
     this.index = o.i
   },
   mounted() {
+    document.getElementsByTagName("title")[0].innerText = "委托人信息"
     this.loadmore()
   },
   methods: {
@@ -146,9 +147,9 @@ export default {
   display: flex;
   width: 100%;
 
-  ::v-deep.u-button {
+  ::v-deep .u-button {
     flex: 1;
-    border-radius: 0px;
+    border-radius: 0px !important; 
     border-right: 0px;
   }
 }

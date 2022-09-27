@@ -27,6 +27,13 @@ function padLeftZero(str) {
 }
 Vue.mixin(vuexStore)
 Vue.filter("formatDate", function (oldDate, fmt = "yyyy-MM-dd hh:mm", placeholders = "暂无数据") {
+  var u = navigator.userAgent
+  if( u.indexOf('iPhone') > -1){
+    oldDate=new Date(oldDate.replace(/-/g, '/')).getTime();
+  }else{
+    oldDate=new Date(oldDate)
+  }
+
   if (!oldDate || oldDate == 0) return placeholders
   // let issafariBrowser = /Safari/.test(navigator.userAgent) && !/Chrome/.test(navigator.userAgent)
   // if (issafariBrowser && !isTimestamp) timestamp = new Date(timestamp.replace(/-/g, '/')).getTime()

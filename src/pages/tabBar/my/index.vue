@@ -4,7 +4,7 @@
       <view class="item1">
         <text>超时提醒</text>
       </view>
-      <text class="text0">您当前正在使用的设备已超过预计使用时长，您是否现在下机</text>
+      <text class="text0">您当前正在使用的设备已超过预计结束时间，您是否延长机时或现在下机</text>
     </view>
     <u-list>
       <u-list-item v-for="(item, index) in list" :key="index">
@@ -16,15 +16,15 @@
             <div>
               <!-- <text>{{ item.name }}</text> -->
               <text>
-                {{ item.registerName }}</text>
+                {{ item }}</text>
             </div>
-            <div style="margin: 10rpx 0px">
+            <div style="width:100%">
               <label for="">本次使用时长:</label>
               <text>{{ item.minutes |ChangeHourMinutestr}}</text>
             </div>
-            <div style="margin: 10rpx 0px">
+            <div >
               <label for="">原预计结束时间:</label>
-              <text>{{ item.presetTime }}</text>
+              <text>{{ item.presetTime | formatDate('yyyy-MM-dd hh:mm')}}</text>
             </div>
           </view>
         </view>
@@ -37,13 +37,8 @@
   </view>
 </template>
 <script>
-import i1 from "../../../static/icon/1.jpg"
-import i2 from "../../../static/icon/2.jpeg"
-import i3 from "../../../static/icon/3.jpeg"
-import i4 from "../../../static/icon/4.jpg"
-import i5 from "../../../static/icon/5.jpeg"
-import i6 from "../../../static/icon/6.jpeg"
-document.getElementsByTagName("title")[0].innerText = ""
+ import i1 from "../../../static/icon/1.png"
+document.getElementsByTagName("title")[0].innerText = "超时提醒"
 export default {
   components: {},
   data() {
@@ -54,6 +49,7 @@ export default {
   },
   onLoad() { },
   mounted() {
+    document.getElementsByTagName("title")[0].innerText = "超时提醒"
     var query = this.$route.query
     if (query.accessToken) {
       this.$u.vuex("query_token", query.accessToken)
@@ -109,32 +105,23 @@ export default {
       this.$res.post(this.https+'/api/Facility/Register/GetOfflineRemind', arr, { "content-type": "application/json" }).then(r => {
         console.log(r)
         for(let i=0;i<r.data.length;i++){
-          if(r.data[i].registerNo=='1001'){
             r.data[i].url=i1
-          }else if(r.data[i].registerNo=='1002'){
-            r.data[i].url=i2
-          }else if(r.data[i].registerNo=='1003'){
-            r.data[i].url=i3
-          }else if(r.data[i].registerNo=='2001'){
-            r.data[i].url=i4
-          }else if(r.data[i].registerNo=='2002'){
-            r.data[i].url=i5
-          }else if(r.data[i].registerNo=='2003'){
-            r.data[i].url=i6
-          }
           // r.data[i].minutes=this.ChangeHourMinutestr(r.data[i].minutes)
         }
         this.list = r.data
       })
     },
     xiaji() {
-      let arr = uni.getStorageSync('sb')
-      let data = {
-        registerNos: arr
-      }
-      this.$res.post(this.https+'/api/Facility/Register/Offline', data, { "content-type": "application/json" }).then(r => {
-        this.appclose()
+       uni.navigateTo({
+        url: `/pages/tabBar/xiaoxi/stuts`
       })
+      // let arr = uni.getStorageSync('sb')
+      // let data = {
+      //   registerNos: arr
+      // }
+      // this.$res.post(this.https+'/api/Facility/Register/Offline', data, { "content-type": "application/json" }).then(r => {
+      //   this.appclose()
+      // })
     },
     actives(index) {
       this.list[index].active = !this.list[index].active
@@ -151,6 +138,16 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+.tips{
+label{
+  color: #000 !important;
+  width: 60rpx !important;
+}
+text{
+  color: #000 !important;
+  flex:1 !important
+}
+}
 .list.active {
   border: 1px solid #3c9cff;
   position: relative;
@@ -168,12 +165,12 @@ export default {
 }
 
 .list.active::after {
-  content: "";
-  width: 22px;
-  height: 20px;
-  position: absolute;
-  right: -3px;
-  bottom: -2px;
+    content: "";
+    width: 18px;
+    height: 17px;
+    position: absolute;
+    right: 0px;
+    bottom: -2px;
   background-image: url(../../../static/img/dui.png);
   background-size: 100% 100%;
 }
@@ -189,7 +186,9 @@ export default {
     margin-left: 20rpx;
     color: #8f9ca2;
     font-size: 12px;
-
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
     label {
       margin-right: 20rpx;
     }
@@ -201,8 +200,8 @@ export default {
 }
 
 .button1 {
-  position: fixed;
-  bottom: 160rpx;
+   position: fixed;
+  bottom: 20rpx;
   left: 60rpx;
   right: 0;
   width: calc(100% - 120rpx);

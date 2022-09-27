@@ -13,18 +13,16 @@
             <image :src="item.url" mode="" style="width: 64px; height: 65px"></image>
           </view>
           <view class="tips">
-            <div>
-              <text>{{ item.registerName }}</text
-              ><text>{{ item.brand }}</text>
+            <div  style="width:100%">
+              <text style="margin-right:40rpx">{{ item.registerName }}
+              </text>
+              
             </div>
             <div style="margin: 10rpx 0px">
               <label for="">预计结束时间:</label>
-              <text>{{ item.presetTime }}</text>
+              <text>{{ item.presetTime |formatDate('yyyy-MM-dd hh:mm')}}</text>
             </div>
-            <!-- <div style="margin: 10rpx 0px">
-              <label for="">规格:</label>
-              <text>{{ item.size }}</text>
-            </div> -->
+       
           </view>
         </view>
       </u-list-item>
@@ -36,14 +34,9 @@
   </view>
 </template>
 <script>
-        import i1 from "../../../static/icon/1.jpg"
-import i2 from "../../../static/icon/2.jpeg"
-import i3 from "../../../static/icon/3.jpeg"
-import i4 from "../../../static/icon/4.jpg"
-import i5 from "../../../static/icon/5.jpeg"
-import i6 from "../../../static/icon/6.jpeg"
-import hys from "../../../static/img/hys.png"
-document.getElementsByTagName("title")[0].innerText = ""
+        import i1 from "../../../static/icon/1.png"
+
+document.getElementsByTagName("title")[0].innerText = "登记成功"
 export default {
   components: {},
   data() {
@@ -56,25 +49,14 @@ export default {
   },
   onLoad() {},
   mounted() {
+    document.getElementsByTagName("title")[0].innerText = "登记成功"
     this.dto()
   },
   methods: {
     dto() {
      this.list= uni.getStorageSync("success")
      for(let i=0;i<this.list.length;i++){
-          if(this.list[i].registerNo=='1001'){
             this.list[i].url=i1
-          }else if(this.list[i].registerNo=='1002'){
-            this.list[i].url=i2
-          }else if(this.list[i].registerNo=='1003'){
-            this.list[i].url=i3
-          }else if(this.list[i].registerNo=='2001'){
-            this.list[i].url=i4
-          }else if(this.list[i].registerNo=='2002'){
-            this.list[i].url=i5
-          }else if(this.list[i].registerNo=='2003'){
-            this.list[i].url=i6
-          }
           // r.data[i].minutes=this.ChangeHourMinutestr(r.data[i].minutes)
         }
     },
@@ -106,6 +88,16 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+.tips{
+label{
+  color: #000 !important;
+  width: 60rpx !important;
+}
+text{
+  color: #000 !important;
+  flex:1 !important
+}
+}
 //   .list.active{
 //     border: 1px solid #3c9cff;
 //     position:relative;
@@ -141,6 +133,9 @@ export default {
     margin-left: 20rpx;
     color: #8f9ca2;
     font-size: 12px;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
     label {
       margin-right: 20rpx;
     }
@@ -151,7 +146,7 @@ export default {
 }
 .button1 {
   position: fixed;
-  bottom: 160rpx;
+  bottom: 20rpx;
   left: 60rpx;
   right: 0;
   width: calc(100% - 120rpx);
@@ -175,11 +170,11 @@ export default {
   color: #8f9ca2;
 }
 .item {
-  margin-bottom: 80rpx;
+  margin-bottom: 40rpx;
 }
 .item1 {
   margin: 10rpx 0px;
-  padding-top: 100rpx;
+  padding-top: 60rpx;
 }
 .scrolls {
 

@@ -13,35 +13,29 @@
               <image :src="item.url" mode="" style="width: 64px; height: 65px"></image>
             </view>
             <view class="tips">
-              <div>
+              <div style="    width: 100%;">
                 <!-- <text>{{ item.name }}</text> -->
                 <text>
                   {{ item.registerName }}</text>
               </div>
+                
               <div style="margin: 10rpx 0px">
                 <label for="">预计结束时间:</label>
-                <text>{{ item.presetTime }}</text>
+                <text>{{ item.presetTime |formatDate('yyyy-MM-dd hh:mm')}}</text>
               </div>
-             
             </view>
           </view>
         </u-list-item>
       </u-list>
       <view class="button1">
-        <u-button type="primary" text="延长机时" class="primarys" @click="ok"></u-button>
-        <u-button text="确认下机" class="primarys" @click="xiaji"></u-button>
+        <u-button type="primary" text="我已知晓" class="primarys" @click="appclose"></u-button>
       </view>
     </view>
   </template>
   <script>
-          import i1 from "../../../static/icon/1.jpg"
-import i2 from "../../../static/icon/2.jpeg"
-import i3 from "../../../static/icon/3.jpeg"
-import i4 from "../../../static/icon/4.jpg"
-import i5 from "../../../static/icon/5.jpeg"
-import i6 from "../../../static/icon/6.jpeg"
-  import hys from "../../../static/img/hys.png"
-  document.getElementsByTagName("title")[0].innerText = ""
+        import i1 from "../../../static/icon/1.png"
+
+  document.getElementsByTagName("title")[0].innerText = "延长机时提醒"
   export default {
     components: {},
     data() {
@@ -52,11 +46,20 @@ import i6 from "../../../static/icon/6.jpeg"
     },
     onLoad() { },
     mounted() {
+        document.getElementsByTagName("title")[0].innerText = "延长机时提醒"
       var query = this.$route.query
       if (query.accessToken) {
         this.$u.vuex("query_token", query.accessToken)
       }
-      if (query.accessToken || localStorage.getItem("query_token")) {
+      if(query.tk==1){
+   let arr = query.q.split(',')
+                  arr.forEach(e => {
+                    e = e + ''
+                  });
+                  this.dto(arr)
+
+      }
+  else    if (query.accessToken || localStorage.getItem("query_token")) {
         if (query.accessToken) {
           localStorage.setItem("query_token", query.accessToken)
         }
@@ -106,19 +109,7 @@ import i6 from "../../../static/icon/6.jpeg"
   
         this.$res.post(this.https+'/api/Facility/Register/GetOfflineRemind', arr, { "content-type": "application/json" }).then(r => {
           r.data.forEach(e => {
-          if(e.registerNo=='1001'){
-        e.url=i1
-      }else if(e.registerNo=='1002'){
-        e.url=i2
-      }else if(e.registerNo=='1003'){
-        e.url=i3
-      }else if(e.registerNo=='2001'){
-        e.url=i4
-      }else if(e.registerNo=='2002'){
-        e.url=i5
-      }else if(e.registerNo=='2003'){
-        e.url=i6
-      }
+          e.url=i1
           e.active=true
         });
           this.list = r.data
@@ -148,32 +139,42 @@ import i6 from "../../../static/icon/6.jpeg"
   }
   </script>
   <style lang="scss" scoped>
-  .list.active {
-    border: 1px solid #3c9cff;
-    position: relative;
-  }
+  .tips{
+label{
+  color: #000 !important;
+  width: 60rpx !important;
+}
+text{
+  color: #000 !important;
+  flex:1 !important
+}
+}
+//   .list.active {
+//     border: 1px solid #3c9cff;
+//     position: relative;
+//   }
   
-  .list.active::before {
-  content: "";
-  width: 22px;
-  height: 22px;
-  position: absolute;
-  right: 0px;
-  bottom: 0px;
-  background: #3c9cff;
-  background: linear-gradient(135deg, transparent, transparent 50%, #3c9cff 50%, #3c9cff 100%);
-}
+//   .list.active::before {
+//   content: "";
+//   width: 22px;
+//   height: 22px;
+//   position: absolute;
+//   right: 0px;
+//   bottom: 0px;
+//   background: #3c9cff;
+//   background: linear-gradient(135deg, transparent, transparent 50%, #3c9cff 50%, #3c9cff 100%);
+// }
 
-.list.active::after {
-  content: "";
-  width: 22px;
-  height: 20px;
-  position: absolute;
-  right: -3px;
-  bottom: -2px;
-  background-image: url(../../../static/img/dui.png);
-  background-size: 100% 100%;
-}
+// .list.active::after {
+//     content: "";
+//     width: 18px;
+//     height: 17px;
+//     position: absolute;
+//     right: 0px;
+//     bottom: -2px;
+//   background-image: url(../../../static/img/dui.png);
+//   background-size: 100% 100%;
+// }
 
   
   .list {
@@ -186,7 +187,9 @@ import i6 from "../../../static/icon/6.jpeg"
       margin-left: 20rpx;
       color: #8f9ca2;
       font-size: 12px;
-  
+     display: flex;
+    align-items: center;
+    flex-wrap: wrap;
       label {
         margin-right: 20rpx;
       }
@@ -199,7 +202,7 @@ import i6 from "../../../static/icon/6.jpeg"
   
   .button1 {
     position: fixed;
-    bottom: 160rpx;
+    bottom: 20rpx;
     left: 60rpx;
     right: 0;
     width: calc(100% - 120rpx);
@@ -233,7 +236,7 @@ import i6 from "../../../static/icon/6.jpeg"
   
   .item1 {
     margin: 10rpx 0px;
-    padding-top: 100rpx;
+    padding-top: 40rpx;
   }
   
   .scrolls {

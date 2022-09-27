@@ -14,32 +14,33 @@
           </view>
           <view class="tips">
             <div>
-              <!-- <text>{{ item.name }}</text> -->
-              <text>
-                {{ item.brand }}</text>
+              <text>{{ item.registerName }}</text>
+              <!-- <text>
+                {{ item.brand }}</text> -->
             </div>
-            <div style="margin: 10rpx 0px" @click.stop="show=true">
+         <div style="margin: 10rpx 0px" >
               <label for="">型号:</label>
               <text>{{ item.model }}</text>
             </div>
-            <div style="margin: 10rpx 0px" @click.stop="show=true">
-              <label for="">规格:</label>
-              <text>{{ item.size }}</text>
-            </div>
-            <div style="margin: 10rpx 0px" @click.stop="show=true">
+            <div style="margin: 10rpx 0px" >
               <label for="">当前占用人:</label>
-              <text>{{ item.userName }}</text>
+              <text>{{ item.userName }}({{item.jobNumber}})</text>
+            </div>
+      
+             <div style="margin: 10rpx 0px">
+              <label for="">手机号:</label>
+              <text>{{}}</text>
             </div>
             <div style="margin: 10rpx 0px">
               <label for="">预计下机时间:</label>
-              <text>{{ item.presetTime }}</text>
+              <text>{{ item.presetTime |formatDate('yyyy-MM-dd hh:mm')}}</text>
             </div>
 
           </view>
         </view>
       </u-list-item>
     </u-list>
-    <u-modal :show="show" title="个人信息"  @confirm="show=false">
+    <!-- <u-modal :show="show" title="个人信息"  @confirm="show=false">
       <div>
         <div style="margin: 10rpx 0px">
           <label for="" style="margin-right:10px;width: 110rpx;    display: inline-block;">姓名:</label>
@@ -58,33 +59,30 @@
           <text>{{ presetTime }}000</text>
         </div>
       </div>
-    </u-modal>
+    </u-modal> -->
     <view class="button1">
-      <u-button type="primary" text="终止使用" class="primarys" @click="ok"></u-button>
-      <u-button text="取消"></u-button>
+      <u-button type="primary" text="终止使用" class="primarys" :disabled="arr.length==0" @click="ok"></u-button>
+     
     </view>
   </view>
 </template>
 <script>
-        import i1 from "../../../static/icon/1.jpg"
-import i2 from "../../../static/icon/2.jpeg"
-import i3 from "../../../static/icon/3.jpeg"
-import i4 from "../../../static/icon/4.jpg"
-import i5 from "../../../static/icon/5.jpeg"
-import i6 from "../../../static/icon/6.jpeg"
-import hys from "../../../static/img/hys.png"
-document.getElementsByTagName("title")[0].innerText = ""
+        import i1 from "../../../static/icon/1.png"
+
+document.getElementsByTagName("title")[0].innerText = "设备被占用"
 export default {
   components: {},
   data() {
     return {
       show:false,
       presetTime:'',
-      list: []
+      list: [],
+      arr:[]
     }
   },
   onLoad() { },
   mounted() {
+    document.getElementsByTagName("title")[0].innerText = "设备被占用"
     this.dto()
   },
   methods: {
@@ -96,48 +94,44 @@ export default {
 
     dto() {
       let arr = uni.getStorageSync('sb')
+      this.arr=[]
       this.$res.post(this.https+'/api/Facility/Register/GetListByRegisterNo', arr, { "content-type": "application/json" }).then(r => {
         r.data.forEach(e => {
-          if(e.registerNo=='1001'){
-        e.url=i1
-      }else if(e.registerNo=='1002'){
-        e.url=i2
-      }else if(e.registerNo=='1003'){
-        e.url=i3
-      }else if(e.registerNo=='2001'){
-        e.url=i4
-      }else if(e.registerNo=='2002'){
-        e.url=i5
-      }else if(e.registerNo=='2003'){
-        e.url=i6
-      }
+          e.url=i1
           e.active=true
+          this.arr.push(e.registerNo)
         });
         this.list = r.data
       })
     },
     actives(index) {
       this.list[index].active = !this.list[index].active
-      console.log(this.list)
+      let list=[]
+      for(let i =0;i<this.list.length;i++){
+          if(this.list[i].active){
+            list.push(this.list[i].registerNo)
+          }
+      }
+      this.arr=list
+      uni.setStorageSync('sb',list)
     },
     sexSelect(e) { },
 
     ok() {
-
       let arr = uni.getStorageSync('sb')
       let data = {
         registerNos: arr
       }
       this.$res.post(this.https+'/api/Facility/Register/Offline', data, { "content-type": "application/json" }).then(r => {
-        if (arr.length > 1) {
+        // if (arr.length > 1) {
           uni.navigateTo({
             url: `/pages/tabBar/shepun/more`,
           })
-        } else {
-          uni.navigateTo({
-            url: `/pages/tabBar/shepun/details`,
-          })
-        }
+        // } else {
+          // uni.navigateTo({
+          //   url: `/pages/tabBar/shepun/details`,
+          // })
+        // }
 
       })
     }
@@ -146,6 +140,16 @@ export default {
 </script>
   
 <style lang="scss" scoped>
+.tips{
+label{
+  color: #000 !important;
+  width: 60rpx !important;
+}
+text{
+  color: #000 !important;
+  flex:1 !important
+}
+}
 .list.active {
   border: 1px solid #3c9cff;
   position: relative;
@@ -163,12 +167,12 @@ export default {
 }
 
 .list.active::after {
-  content: "";
-  width: 22px;
-  height: 20px;
-  position: absolute;
-  right: -3px;
-  bottom: -2px;
+    content: "";
+    width: 18px;
+    height: 17px;
+    position: absolute;
+    right: 0px;
+    bottom: -2px;
   background-image: url(../../../static/img/dui.png);
   background-size: 100% 100%;
 }
@@ -196,7 +200,7 @@ export default {
 
 .button1 {
   position: fixed;
-  bottom: 160rpx;
+  bottom: 20rpx;
   left: 60rpx;
   right: 0;
   width: calc(100% - 120rpx);
@@ -225,12 +229,12 @@ export default {
 }
 
 .item {
-  margin-bottom: 80rpx;
+  margin-bottom: 40rpx;
 }
 
 .item1 {
   margin: 10rpx 0px;
-  padding-top: 100rpx;
+  padding-top: 40rpx;
 }
 
 .scrolls {

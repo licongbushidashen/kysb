@@ -1,6 +1,6 @@
 <template>
   <view class="scrolls">
-    <text>时间选择</text>
+    <text>请选择时间</text>
     <u-radio-group v-model="radiovalue1" placement="column">
       <u-radio :customStyle="{ marginBottom: '8px' }" v-for="(item, index) in radiolist1" :key="index"
         :label="item.name" :name="item.name" @change="radioChange">
@@ -11,12 +11,11 @@
 
     <view class="button1">
       <u-button type="primary" text="确认" class="primarys" @click="ok" :disabled="radiovalue1==''"></u-button>
-      <u-button text="取消"></u-button>
     </view>
   </view>
 </template>
 <script>
-document.getElementsByTagName("title")[0].innerText = "时间选择"
+document.getElementsByTagName("title")[0].innerText = "请选择时间"
 export default {
   components: {},
   data() {
@@ -25,28 +24,30 @@ export default {
       radiovalue1: "",
       value: "",
       showSex: false,
-      radiolist1: [{ name: "15min" }, { name: "30min" }, { name: "1h" }, { name: "2h" }, { name: "4h" }, { name: "自定义时间" }],
+      radiolist1: [{ name: "15分钟" }, { name: "30分钟" }, { name: "1小时" }, { name: "2小时" }, { name: "4小时" }, { name: "自定义时间" }],
       endtime: {}
     }
   },
 
-  mounted() { },
+  mounted() { 
+    document.getElementsByTagName("title")[0].innerText = "请选择时间"
+  },
   methods: {
     ok() {
       let time = ''
-      if (this.radiovalue1 == '15min') {
+      if (this.radiovalue1 == '15分钟') {
         time = new Date().getTime() + 1000 * 900
       }
-      if (this.radiovalue1 == '30min') {
+      if (this.radiovalue1 == '30分钟') {
         time = new Date().getTime() + 1000 * 1800
       }
-      if (this.radiovalue1 == '1h') {
+      if (this.radiovalue1 == '1小时') {
         time = new Date().getTime() + 1 * 1000 * 3600
       }
-      if (this.radiovalue1 == '2h') {
+      if (this.radiovalue1 == '2小时') {
         time = new Date().getTime() + 2 * 1000 * 3600
       }
-      if (this.radiovalue1 == '4h') {
+      if (this.radiovalue1 == '4小时') {
         time = new Date().getTime() + 4 * 1000 * 3600
       }
       this.endtime = this.format(new Date(time))
@@ -109,6 +110,12 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+::v-deep .u-radio__icon-wrap__icon{
+  span{
+  font-size: 12px !important;
+    line-height: 11px !important;
+  }
+}
 ::v-deep .u-radio-group {
   margin-top: 20px !important;
 }
@@ -119,6 +126,7 @@ export default {
 }
 
 ::v-deep .u-radio__text {
+  color: #000 !important;
   font-size: 14px !important;
   line-height: 14px !important;
 }
@@ -138,7 +146,7 @@ export default {
 
 .button1 {
   position: fixed;
-  bottom: 160rpx;
+  bottom: 20rpx;
   left: 60rpx;
   right: 0;
   width: calc(100% - 120rpx);

@@ -19,7 +19,7 @@
             </div>
             <div style="margin: 10rpx 0px">
               <label for="">本次使用时长:</label>
-              <text>{{ item.minutes }}</text>
+                <text>{{ item.minutes |ChangeHourMinutestr}}</text>
             </div>
             <div style="margin: 10rpx 0px">
               <label for="">支持科研项目:</label>
@@ -52,7 +52,7 @@
 </template>
 <script>
 import hys from "../../../static/img/hys.png"
-document.getElementsByTagName("title")[0].innerText = ""
+document.getElementsByTagName("title")[0].innerText = "设备被占用"
 export default {
   components: {},
   data() {
@@ -63,6 +63,7 @@ export default {
   },
   onLoad() { },
   mounted() {
+    document.getElementsByTagName("title")[0].innerText = "设备被占用"
     var query = this.$route.query
     if (query.accessToken) {
       this.$u.vuex("query_token", query.accessToken)
@@ -149,12 +150,12 @@ export default {
 }
 
 .list.active::after {
-  content: "";
-  width: 22px;
-  height: 20px;
-  position: absolute;
-  right: -3px;
-  bottom: -2px;
+    content: "";
+    width: 18px;
+    height: 17px;
+    position: absolute;
+    right: 0px;
+    bottom: -2px;
   background-image: url(../../../static/img/dui.png);
   background-size: 100% 100%;
 }
@@ -183,7 +184,7 @@ export default {
 
 .button1 {
   position: fixed;
-  bottom: 160rpx;
+  bottom: 20rpx;
   left: 60rpx;
   right: 0;
   width: calc(100% - 120rpx);
